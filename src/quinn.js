@@ -1,4 +1,4 @@
-import { HieiClient } from '../hiei.js'
+import { HieiClient } from 'hiei.js'
 import { GatewayIntentBits } from 'discord.js'
 
 const client = new HieiClient({
