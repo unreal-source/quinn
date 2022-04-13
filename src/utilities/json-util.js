@@ -4,5 +4,5 @@ import { readFile } from 'node:fs/promises'
  * @param {String} path - The path to the JSON file you want to import
 */
 export async function importJson (path) {
-  return JSON.parse(await readFile(new URL(path, import.meta.url)))
+  return JSON.parse(await readFile(path))
 }

@@ -1,8 +1,9 @@
 import { SlashCommand } from 'hiei.js'
 import { MessageEmbed } from 'discord.js'
 import { time } from '@discordjs/builders'
-import { importJson } from '../../utilities/json-util'
+import { importJson } from '../../utilities/json-util.js'
 import ms from 'ms'
+import { resolve } from 'node:path'
 
 class BotInfo extends SlashCommand {
   constructor () {
@@ -14,8 +15,8 @@ class BotInfo extends SlashCommand {
 
   async run (interaction) {
     const memoryUsed = (process.memoryUsage().heapUsed / 1024 / 1024)
-    const meta = await importJson('../../../package.json')
     const info = new MessageEmbed()
+    const meta = await importJson(resolve(process.cwd(), 'package.json'))
       .setTitle(this.client.user.tag)
       .setDescription(this.client.application.description ? this.client.application.description : '')
       .setThumbnail(this.client.user.displayAvatarURL())
