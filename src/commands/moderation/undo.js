@@ -154,7 +154,6 @@ class Undo extends SlashCommand {
         const id = interaction.options.getString('user')
         const reason = interaction.options.getString('reason')
 
-        // You can't unban the bot or yourself
         if (id === this.client.user.id) {
           return interaction.reply({ content: 'Nice try, human.', ephemeral: true })
         }
@@ -163,17 +162,12 @@ class Undo extends SlashCommand {
           return interaction.reply({ content: 'You can\'t revoke your own ban.', ephemeral: true })
         }
 
-        // Check if member is banned
         try {
           const ban = await interaction.guild.bans.fetch(id)
 
-          // Revoke ban
           await interaction.guild.members.unban(id)
+          await interaction.reply({ content: `${ban.user.tag} is no longer banned. Please remember to notify them.`, ephemeral: true })
 
-          // Notify moderator
-          await interaction.reply({ content: `${ban.user.tag} is no longer banned.`, ephemeral: true })
-
-          // Create case
           const incident = await prisma.case.create({
             data: {
               action: 'Ban revoked',
@@ -185,20 +179,18 @@ class Undo extends SlashCommand {
             }
           })
 
-          // Create mod log
-          const modLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
-          const modLogEntry = new MessageEmbed()
+          const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
+          const moderationLogEntry = new EmbedBuilder()
             .setAuthor({ name: `↩️ ${incident.action}` })
             .setTitle(incident.member)
-            .addField('Moderator', incident.moderator)
-            .addField('Reason', incident.reason)
             .setThumbnail(ban.user.displayAvatarURL())
+            .addFields(
+              { name: 'Moderator', value: incident.moderator },
+              { name: 'Reason', value: incident.reason })
             .setFooter({ text: `#${incident.id}` })
             .setTimestamp()
 
-          modLog.send({ embeds: [modLogEntry] })
-
-          // TODO: Log the incident with Grafana
+          moderationLog.send({ embeds: [moderationLogEntry] })
         } catch {
           try {
             const member = await interaction.guild.members.fetch(id)
