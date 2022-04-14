@@ -65,7 +65,7 @@ class Ban extends SlashCommand {
         }
       })
 
-      // We can't notify members after banning so we have to do this first
+      // We can't notify members after they leave, so we have to do it before banning
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle('You were banned from the server')
@@ -85,8 +85,8 @@ class Ban extends SlashCommand {
 
       await interaction.reply({ content: `${member.user.tag} was banned from the server.`, ephemeral: true })
 
-      const modLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
-      const modLogEntry = new EmbedBuilder()
+      const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
+      const moderationLogEntry = new EmbedBuilder()
         .setAuthor({ name: `🚫 ${incident.action}` })
         .setTitle(incident.member)
         .setThumbnail(member.displayAvatarURL())
@@ -96,7 +96,7 @@ class Ban extends SlashCommand {
         .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
-      modLog.send({ embeds: [modLogEntry] })
+      moderationLog.send({ embeds: [moderationLogEntry] })
     } else {
       return interaction.reply({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
     }
