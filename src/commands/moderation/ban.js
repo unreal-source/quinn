@@ -42,7 +42,7 @@ class Ban extends SlashCommand {
     const prisma = new PrismaClient()
 
     if (!member) {
-      return interaction.reply({ content: 'Member not found. They may have already left the server. If they still appear in autocomplete, refresh your client to clear the cache.', ephemeral: true })
+      return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
     }
 
     if (member.id === this.client.user.id) {
