@@ -143,10 +143,11 @@ class Undo extends SlashCommand {
         const caseNumber = interaction.options.getInteger('case')
         const reason = interaction.options.getString('reason')
 
+        // Fetch case
         // Cache, bot, self guards
-        // Check if case is an active strike or member has any strikes
+        // Check if case is a strike, then if it's active
         // If yes: set strike to inactive, notify moderator, create case, create mod log, notify member
-        // If no: notify moderator "that case is not an active strike" or "that member has no strikes"
+        // If no: notify moderator "that case is not a strike" or "that strike is no longer active"
         break
       }
 
