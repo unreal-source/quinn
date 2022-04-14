@@ -69,7 +69,6 @@ class Kick extends SlashCommand {
       }
 
       await member.kick(reason)
-
       await interaction.reply({ content: `${member.user.tag} was kicked from the server.`, ephemeral: true })
 
       const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)

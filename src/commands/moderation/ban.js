@@ -82,7 +82,6 @@ class Ban extends SlashCommand {
       }
 
       await member.ban({ days: messages, reason: reason })
-
       await interaction.reply({ content: `${member.user.tag} was banned from the server.`, ephemeral: true })
 
       const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
