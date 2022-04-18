@@ -135,19 +135,87 @@ class Undo extends SlashCommand {
         } else {
           return interaction.reply({ content: `${member.user.tag} isn not timed out.`, ephemeral: true })
         }
-
         break
       }
 
       case 'strike': {
         const caseNumber = interaction.options.getInteger('case')
         const reason = interaction.options.getString('reason')
+        const prisma = new PrismaClient()
+        const record = await prisma.case.findUnique({
+          where: { id: caseNumber }
+        })
 
-        // Fetch case
-        // Cache, bot, self guards
-        // Check if case is a strike, then if it's active
-        // If yes: set strike to inactive, notify moderator, create case, create mod log, notify member
-        // If no: notify moderator "that case is not a strike" or "that strike is no longer active"
+        if (!record) {
+          return interaction.reply({ content: 'Case not found.', ephemeral: true })
+        }
+
+        if (!record.strike) {
+          return interaction.reply({ content: `Case #${record.id} is not a strike.`, ephemeral: true })
+        }
+
+        if (!record.strike.isActive) {
+          return interaction.reply({ content: 'Strike already removed.', ephemeral: true })
+        }
+
+        if (record.memberId === interaction.member.id) {
+          return interaction.reply({ content: 'You can\'t remove your own strike.', ephemeral: true })
+        }
+
+        await prisma.case.update({
+          where: { id: caseNumber },
+          data: {
+            strike: { isActive: false }
+          }
+        })
+
+        const strikesRemaining = await prisma.case.count({
+          where: {
+            memberId: record.memberId,
+            strike: { isActive: true }
+          }
+        })
+
+        await interaction.reply({ content: `${record.member} lost a strike. They have ${strikesRemaining} strikes remaining.`, ephemeral: true })
+
+        const incident = await prisma.case.create({
+          data: {
+            action: 'Strike removed',
+            member: record.member,
+            memberId: record.memberId,
+            moderator: interaction.member.user.tag,
+            moderatorId: interaction.member.id,
+            reason: reason
+          }
+        })
+
+        const member = await interaction.guild.members.fetch(incident.memberId)
+        const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
+        const moderationLogEntry = new EmbedBuilder()
+          .setAuthor({ name: `↩️ ${incident.action}` })
+          .setTitle(incident.member)
+          .setThumbnail(member.displayAvatarURL())
+          .addFields(
+            { name: 'Moderator', value: incident.moderator },
+            { name: 'Reason', value: incident.reason })
+          .setFooter({ text: `#${incident.id}` })
+          .setTimestamp()
+
+        moderationLog.send({ embeds: [moderationLogEntry] })
+
+        const notification = new EmbedBuilder()
+          .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
+          .setTitle('Your timeout was cancelled')
+          .addFields(
+            { name: 'Reason', value: reason })
+          .setFooter({ text: `Case #${incident.id}` })
+          .setTimestamp()
+
+        try {
+          await member.send({ embeds: [notification] })
+        } catch (e) {
+          await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
+        }
         break
       }
 
