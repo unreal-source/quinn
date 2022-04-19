@@ -106,6 +106,8 @@ class Undo extends SlashCommand {
             }
           })
 
+          await prisma.$disconnect()
+
           const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
           const moderationLogEntry = new EmbedBuilder()
             .setAuthor({ name: `↩️ ${incident.action}` })
@@ -192,6 +194,8 @@ class Undo extends SlashCommand {
           }
         })
 
+        await prisma.$disconnect()
+
         const member = await interaction.guild.members.fetch(incident.memberId)
         const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
         const moderationLogEntry = new EmbedBuilder()
@@ -250,6 +254,8 @@ class Undo extends SlashCommand {
               reason: reason
             }
           })
+
+          await prisma.$disconnect()
 
           const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
           const moderationLogEntry = new EmbedBuilder()

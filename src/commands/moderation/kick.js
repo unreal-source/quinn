@@ -53,6 +53,8 @@ class Kick extends SlashCommand {
         }
       })
 
+      await prisma.$disconnect()
+
       // We can't notify members after they leave, so we have to do it before kicking
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })

@@ -79,6 +79,8 @@ class Timeout extends SlashCommand {
       }
     })
 
+    await prisma.$disconnect()
+
     const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
     const moderationLogEntry = new EmbedBuilder()
       .setAuthor({ name: `⏳ ${incident.action}` })

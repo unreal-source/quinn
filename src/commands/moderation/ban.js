@@ -65,6 +65,8 @@ class Ban extends SlashCommand {
         }
       })
 
+      await prisma.$disconnect()
+
       // We can't notify members after they leave, so we have to do it before banning
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
