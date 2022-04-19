@@ -143,8 +143,11 @@ class Undo extends SlashCommand {
         const reason = interaction.options.getString('reason')
         const prisma = new PrismaClient()
         const record = await prisma.case.findUnique({
-          where: { id: caseNumber }
+          where: { id: caseNumber },
+          include: { strike: true }
         })
+
+        console.log(record)
 
         if (!record) {
           return interaction.reply({ content: 'Case not found.', ephemeral: true })
@@ -162,10 +165,10 @@ class Undo extends SlashCommand {
           return interaction.reply({ content: 'You can\'t remove your own strike.', ephemeral: true })
         }
 
-        await prisma.case.update({
+        await prisma.strike.update({
           where: { id: caseNumber },
           data: {
-            strike: { isActive: false }
+            isActive: false
           }
         })
 
