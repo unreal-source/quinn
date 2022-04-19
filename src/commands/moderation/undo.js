@@ -106,7 +106,7 @@ class Undo extends SlashCommand {
             }
           })
 
-          const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
+          const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
           const moderationLogEntry = new EmbedBuilder()
             .setAuthor({ name: `↩️ ${incident.action}` })
             .setTitle(incident.member)
@@ -190,7 +190,7 @@ class Undo extends SlashCommand {
         })
 
         const member = await interaction.guild.members.fetch(incident.memberId)
-        const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
+        const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
         const moderationLogEntry = new EmbedBuilder()
           .setAuthor({ name: `↩️ ${incident.action}` })
           .setTitle(incident.member)
@@ -248,7 +248,7 @@ class Undo extends SlashCommand {
             }
           })
 
-          const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
+          const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
           const moderationLogEntry = new EmbedBuilder()
             .setAuthor({ name: `↩️ ${incident.action}` })
             .setTitle(incident.member)

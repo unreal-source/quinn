@@ -73,7 +73,7 @@ class Strike extends SlashCommand {
       }
     })
 
-    const moderationLog = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL)
+    const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
 
     // Strike 1 - Timeout for 10 mins
     if (activeStrikes === 1) {
