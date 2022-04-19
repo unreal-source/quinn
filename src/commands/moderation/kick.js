@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -10,13 +10,13 @@ class Kick extends SlashCommand {
       description: 'Kick a user',
       options: [
         {
-          type: 'USER',
+          type: ApplicationCommandOptionType.User,
           name: 'user',
           description: 'The user you want to kick',
           required: true
         },
         {
-          type: 'STRING',
+          type: ApplicationCommandOptionType.String,
           name: 'reason',
           description: 'The reason for kicking them, if any'
         }

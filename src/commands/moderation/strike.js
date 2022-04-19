@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
 import { time } from '@discordjs/builders'
 import ms from 'ms'
 import pkg from '@prisma/client'
@@ -12,13 +12,13 @@ class Strike extends SlashCommand {
       description: 'Give someone a strike',
       options: [
         {
-          type: 'USER',
+          type: ApplicationCommandOptionType.User,
           name: 'user',
           description: 'The user you want to give a strike to',
           required: true
         },
         {
-          type: 'STRING',
+          type: ApplicationCommandOptionType.String,
           name: 'reason',
           description: 'The reason for this strike, if any'
         }

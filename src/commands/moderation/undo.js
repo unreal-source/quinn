@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -10,18 +10,18 @@ class Undo extends SlashCommand {
       description: 'Undo a moderator action',
       options: [
         {
-          type: 'SUB_COMMAND',
+          type: ApplicationCommandOptionType.Subcommand,
           name: 'timeout',
           description: 'Cancel a timeout',
           options: [
             {
-              type: 'USER',
+              type: ApplicationCommandOptionType.User,
               name: 'user',
               description: 'The timed out user',
               required: true
             },
             {
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
               name: 'reason',
               description: 'The reason for undoing this timeout',
               required: true
@@ -29,18 +29,18 @@ class Undo extends SlashCommand {
           ]
         },
         {
-          type: 'SUB_COMMAND',
+          type: ApplicationCommandOptionType.Subcommand,
           name: 'strike',
           description: 'Remove a strike',
           options: [
             {
-              type: 'INTEGER',
+              type: ApplicationCommandOptionType.Integer,
               name: 'case',
               description: 'The case number for the strike',
               required: true
             },
             {
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
               name: 'reason',
               description: 'The reason for undoing this strike',
               required: true
@@ -48,18 +48,18 @@ class Undo extends SlashCommand {
           ]
         },
         {
-          type: 'SUB_COMMAND',
+          type: ApplicationCommandOptionType.Subcommand,
           name: 'ban',
           description: 'Revoke a ban',
           options: [
             {
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
               name: 'user',
               description: 'The ID of the banned user',
               required: true
             },
             {
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
               name: 'reason',
               description: 'The reason for undoing this ban',
               required: true

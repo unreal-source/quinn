@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -10,13 +10,13 @@ class Ban extends SlashCommand {
       description: 'Ban a user',
       options: [
         {
-          type: 'USER',
+          type: ApplicationCommandOptionType.User,
           name: 'user',
           description: 'The user you want to ban',
           required: true
         },
         {
-          type: 'INTEGER',
+          type: ApplicationCommandOptionType.Integer,
           name: 'messages',
           description: 'How much of their recent message history to delete',
           required: true,
@@ -27,7 +27,7 @@ class Ban extends SlashCommand {
           ]
         },
         {
-          type: 'STRING',
+          type: ApplicationCommandOptionType.String,
           name: 'reason',
           description: 'The reason for banning them, if any'
         }

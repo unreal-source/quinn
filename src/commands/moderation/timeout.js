@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
 import { time } from '@discordjs/builders'
 import ms from 'ms'
 import pkg from '@prisma/client'
@@ -12,13 +12,13 @@ class Timeout extends SlashCommand {
       description: 'Timeout a user',
       options: [
         {
-          type: 'USER',
+          type: ApplicationCommandOptionType.User,
           name: 'user',
           description: 'The user you want to time out',
           required: true
         },
         {
-          type: 'STRING',
+          type: ApplicationCommandOptionType.String,
           name: 'duration',
           description: 'How long they should be timed out for',
           required: true,
@@ -32,7 +32,7 @@ class Timeout extends SlashCommand {
           ]
         },
         {
-          type: 'STRING',
+          type: ApplicationCommandOptionType.String,
           name: 'reason',
           description: 'The reason for timing them out, if any'
         }
