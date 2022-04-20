@@ -149,8 +149,6 @@ class Undo extends SlashCommand {
           include: { strike: true }
         })
 
-        console.log(record)
-
         if (!record) {
           return interaction.reply({ content: 'Case not found.', ephemeral: true })
         }
@@ -212,7 +210,7 @@ class Undo extends SlashCommand {
 
         const notification = new EmbedBuilder()
           .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-          .setTitle('Your timeout was cancelled')
+          .setTitle(`You lost a strike • ${strikesRemaining} remaining`)
           .addFields(
             { name: 'Reason', value: reason })
           .setFooter({ text: `Case #${incident.id}` })
