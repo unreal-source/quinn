@@ -65,6 +65,22 @@ class Ban extends SlashCommand {
         }
       })
 
+      const strikes = await prisma.case.findMany({
+        where: {
+          memberId: member.id,
+          strike: {
+            is: { isActive: true }
+          }
+        }
+      })
+
+      await Promise.all(strikes.map(strike => {
+        return prisma.strike.update({
+          where: { id: strike.id },
+          data: { isActive: false }
+        })
+      }))
+
       await prisma.$disconnect()
 
       // We can't notify members after they leave, so we have to do it before banning

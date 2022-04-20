@@ -73,8 +73,6 @@ class Strike extends SlashCommand {
       }
     })
 
-    await prisma.$disconnect()
-
     const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
 
     // Strike 1 - Timeout for 10 mins
@@ -109,6 +107,8 @@ class Strike extends SlashCommand {
       } catch (e) {
         await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
       }
+
+      await prisma.$disconnect()
     }
 
     // Strike 2 - Timeout for 1 hour
@@ -143,6 +143,8 @@ class Strike extends SlashCommand {
       } catch (e) {
         await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
       }
+
+      await prisma.$disconnect()
     }
 
     // Strike 3 - Banned
@@ -178,6 +180,24 @@ class Strike extends SlashCommand {
           .setTimestamp()
 
         await moderationLog.send({ embeds: [moderationLogEntry] })
+
+        const strikes = await prisma.case.findMany({
+          where: {
+            memberId: member.id,
+            strike: {
+              is: { isActive: true }
+            }
+          }
+        })
+
+        await Promise.all(strikes.map(strike => {
+          return prisma.strike.update({
+            where: { id: strike.id },
+            data: { isActive: false }
+          })
+        }))
+
+        await prisma.$disconnect()
       } else {
         return interaction.reply({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
       }
