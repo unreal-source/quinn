@@ -30,6 +30,32 @@ CREATE TABLE "Timeout" (
     CONSTRAINT "Timeout_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "JobPost" (
+    "id" SERIAL NOT NULL,
+    "type" TEXT NOT NULL,
+    "member" TEXT NOT NULL,
+    "memberId" TEXT NOT NULL,
+    "messageId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "JobPost_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Portfolio" (
+    "id" SERIAL NOT NULL,
+    "type" TEXT NOT NULL,
+    "member" TEXT NOT NULL,
+    "memberId" TEXT NOT NULL,
+    "messageId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Portfolio_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Strike_id_key" ON "Strike"("id");
 
