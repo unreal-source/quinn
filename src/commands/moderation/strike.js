@@ -52,10 +52,10 @@ class Strike extends SlashCommand {
         memberId: member.id,
         moderator: interaction.member.user.tag,
         moderatorId: interaction.member.id,
-        reason: reason,
+        reason,
         strike: {
           create: {
-            expiration: expiration,
+            expiration,
             isActive: true
           }
         }
@@ -165,7 +165,7 @@ class Strike extends SlashCommand {
           await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
         }
 
-        await member.ban({ days: 1, reason: reason })
+        await member.ban({ days: 1, reason })
         await interaction.reply({ content: `${member.user.tag} got strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
 
         const moderationLogEntry = new EmbedBuilder()

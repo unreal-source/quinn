@@ -49,7 +49,7 @@ class Kick extends SlashCommand {
           memberId: member.id,
           moderator: interaction.member.user.tag,
           moderatorId: interaction.member.id,
-          reason: reason
+          reason
         }
       })
 

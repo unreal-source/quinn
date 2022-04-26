@@ -102,7 +102,7 @@ class Undo extends SlashCommand {
               memberId: member.id,
               moderator: interaction.member.user.tag,
               moderatorId: interaction.member.id,
-              reason: reason
+              reason
             }
           })
 
@@ -188,7 +188,7 @@ class Undo extends SlashCommand {
             memberId: record.memberId,
             moderator: interaction.member.user.tag,
             moderatorId: interaction.member.id,
-            reason: reason
+            reason
           }
         })
 
@@ -249,7 +249,7 @@ class Undo extends SlashCommand {
               memberId: ban.user.id,
               moderator: interaction.member.user.tag,
               moderatorId: interaction.member.id,
-              reason: reason
+              reason
             }
           })
 

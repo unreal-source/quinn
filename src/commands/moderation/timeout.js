@@ -72,9 +72,9 @@ class Timeout extends SlashCommand {
         memberId: member.id,
         moderator: interaction.member.user.tag,
         moderatorId: interaction.member.id,
-        reason: reason,
+        reason,
         timeout: {
-          create: { duration: duration }
+          create: { duration }
         }
       }
     })

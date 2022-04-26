@@ -61,7 +61,7 @@ class Ban extends SlashCommand {
           memberId: member.id,
           moderator: interaction.member.user.tag,
           moderatorId: interaction.member.id,
-          reason: reason
+          reason
         }
       })
 
@@ -99,7 +99,7 @@ class Ban extends SlashCommand {
         await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
       }
 
-      await member.ban({ days: messages, reason: reason })
+      await member.ban({ days: messages, reason })
       await interaction.reply({ content: `${member.user.tag} was banned from the server.`, ephemeral: true })
 
       const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
