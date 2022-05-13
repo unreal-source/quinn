@@ -86,9 +86,9 @@ class Timeout extends SlashCommand {
       .setAuthor({ name: `⏳ ${incident.action}` })
       .setTitle(incident.member)
       .setThumbnail(member.displayAvatarURL())
-      .addFields(
+      .addFields([
         { name: 'Moderator', value: incident.moderator },
-        { name: 'Reason', value: incident.reason })
+        { name: 'Reason', value: incident.reason }])
       .setFooter({ text: `#${incident.id}` })
       .setTimestamp()
 
@@ -97,8 +97,7 @@ class Timeout extends SlashCommand {
     const receipt = new EmbedBuilder()
       .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
       .setTitle(`You were timed out for ${duration}`)
-      .addFields(
-        { name: 'Reason', value: reason })
+      .addFields([{ name: 'Reason', value: reason }])
       .setFooter({ text: `Case #${incident.id}` })
       .setTimestamp()
 

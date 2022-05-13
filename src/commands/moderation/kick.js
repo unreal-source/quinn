@@ -59,8 +59,7 @@ class Kick extends SlashCommand {
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle('You were kicked from the server')
-        .addFields(
-          { name: 'Reason', value: reason })
+        .addFields([{ name: 'Reason', value: reason }])
         .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
@@ -77,9 +76,9 @@ class Kick extends SlashCommand {
       const moderationLogEntry = new EmbedBuilder()
         .setAuthor({ name: `🥾 ${incident.action}` })
         .setTitle(incident.member)
-        .addFields(
+        .addFields([
           { name: 'Moderator', value: incident.moderator },
-          { name: 'Reason', value: incident.reason })
+          { name: 'Reason', value: incident.reason }])
         .setThumbnail(member.displayAvatarURL())
         .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()

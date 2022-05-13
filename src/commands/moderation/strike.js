@@ -84,10 +84,10 @@ class Strike extends SlashCommand {
         .setAuthor({ name: '🚩 Strike 1 • Timed out for 10 mins' })
         .setTitle(incident.member)
         .setThumbnail(member.displayAvatarURL())
-        .addFields(
+        .addFields([
           { name: 'Moderator', value: incident.moderator },
           { name: 'Reason', value: incident.reason },
-          { name: 'Expiration', value: time(incident.strike.expiration, 'R') })
+          { name: 'Expiration', value: time(incident.strike.expiration, 'R') }])
         .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
@@ -96,9 +96,9 @@ class Strike extends SlashCommand {
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle('Strike 1 • You were timed out for 10 mins')
-        .addFields(
+        .addFields([
           { name: 'Reason', value: reason },
-          { name: 'Expiration', value: time(incident.strike.expiration, 'R') })
+          { name: 'Expiration', value: time(incident.strike.expiration, 'R') }])
         .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 

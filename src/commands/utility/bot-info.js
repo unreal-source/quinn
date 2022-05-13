@@ -20,13 +20,13 @@ class BotInfo extends SlashCommand {
       .setTitle(this.client.user.tag)
       .setDescription(this.client.application.description ?? null)
       .setThumbnail(this.client.user.displayAvatarURL())
-      .addFields(
+      .addFields([
         { name: 'ID', value: this.client.user.id, inline: true },
         { name: 'Version', value: meta.version, inline: true },
         { name: 'Last Login', value: `${time(this.client.readyAt)} • ${time(this.client.readyAt, 'R')}` },
         { name: 'Uptime', value: ms(this.client.uptime, { long: true }), inline: true },
         { name: 'Heartbeat', value: `${this.client.ws.ping}ms`, inline: true },
-        { name: 'Memory Usage', value: `${Math.round(memoryUsed * 100) / 100} MB`, inline: true })
+        { name: 'Memory Usage', value: `${Math.round(memoryUsed * 100) / 100} MB`, inline: true }])
 
     return interaction.reply({ embeds: [info] })
   }

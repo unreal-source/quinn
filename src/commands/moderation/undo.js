@@ -113,9 +113,9 @@ class Undo extends SlashCommand {
             .setAuthor({ name: `↩️ ${incident.action}` })
             .setTitle(incident.member)
             .setThumbnail(member.displayAvatarURL())
-            .addFields(
+            .addFields([
               { name: 'Moderator', value: incident.moderator },
-              { name: 'Reason', value: incident.reason })
+              { name: 'Reason', value: incident.reason }])
             .setFooter({ text: `#${incident.id}` })
             .setTimestamp()
 
@@ -124,8 +124,7 @@ class Undo extends SlashCommand {
           const notification = new EmbedBuilder()
             .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
             .setTitle('Your timeout was cancelled')
-            .addFields(
-              { name: 'Reason', value: reason })
+            .addFields([{ name: 'Reason', value: reason }])
             .setFooter({ text: `Case #${incident.id}` })
             .setTimestamp()
 
@@ -200,9 +199,9 @@ class Undo extends SlashCommand {
           .setAuthor({ name: `↩️ ${incident.action}` })
           .setTitle(incident.member)
           .setThumbnail(member.displayAvatarURL())
-          .addFields(
+          .addFields([
             { name: 'Moderator', value: incident.moderator },
-            { name: 'Reason', value: incident.reason })
+            { name: 'Reason', value: incident.reason }])
           .setFooter({ text: `#${incident.id}` })
           .setTimestamp()
 
@@ -211,8 +210,7 @@ class Undo extends SlashCommand {
         const notification = new EmbedBuilder()
           .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
           .setTitle(`You lost a strike • ${strikesRemaining} remaining`)
-          .addFields(
-            { name: 'Reason', value: reason })
+          .addFields([{ name: 'Reason', value: reason }])
           .setFooter({ text: `Case #${incident.id}` })
           .setTimestamp()
 
@@ -260,9 +258,9 @@ class Undo extends SlashCommand {
             .setAuthor({ name: `↩️ ${incident.action}` })
             .setTitle(incident.member)
             .setThumbnail(ban.user.displayAvatarURL())
-            .addFields(
+            .addFields([
               { name: 'Moderator', value: incident.moderator },
-              { name: 'Reason', value: incident.reason })
+              { name: 'Reason', value: incident.reason }])
             .setFooter({ text: `#${incident.id}` })
             .setTimestamp()
 

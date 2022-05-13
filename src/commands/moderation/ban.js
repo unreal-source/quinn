@@ -87,9 +87,9 @@ class Ban extends SlashCommand {
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle('You were banned from the server')
-        .addFields(
+        .addFields([
           { name: 'Reason', value: reason },
-          { name: 'How to Appeal', value: 'If you want to challenge this decision, you can appeal it [here](). Our staff will review your appeal and respond as soon as possible.' })
+          { name: 'How to Appeal', value: 'If you want to challenge this decision, you can appeal it [here](). Our staff will review your appeal and respond as soon as possible.' }])
         .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
@@ -107,9 +107,9 @@ class Ban extends SlashCommand {
         .setAuthor({ name: `🚫 ${incident.action}` })
         .setTitle(incident.member)
         .setThumbnail(member.displayAvatarURL())
-        .addFields(
+        .addFields([
           { name: 'Moderator', value: incident.moderator },
-          { name: 'Reason', value: incident.reason })
+          { name: 'Reason', value: incident.reason }])
         .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
