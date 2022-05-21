@@ -83,26 +83,22 @@ class Timeout extends SlashCommand {
 
     const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
     const moderationLogEntry = new EmbedBuilder()
-      .setAuthor({ name: `⏳ ${incident.action}` })
-      .setTitle(incident.member)
+      .setAuthor({ name: `⏳ Timed out for ${duration}` })
+      .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
+      .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
       .setThumbnail(member.displayAvatarURL())
-      .addFields([
-        { name: 'Moderator', value: incident.moderator },
-        { name: 'Reason', value: incident.reason }])
-      .setFooter({ text: `#${incident.id}` })
       .setTimestamp()
 
     moderationLog.send({ embeds: [moderationLogEntry] })
 
-    const receipt = new EmbedBuilder()
+    const notification = new EmbedBuilder()
       .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-      .setTitle(`You were timed out for ${duration}`)
-      .addFields([{ name: 'Reason', value: reason }])
-      .setFooter({ text: `Case #${incident.id}` })
+      .setTitle(`Timed out for ${duration}`)
+      .setDescription(`**Reason:** ${reason}`)
       .setTimestamp()
 
     try {
-      await member.send({ embeds: [receipt] })
+      await member.send({ embeds: [notification] })
     } catch (e) {
       await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
     }

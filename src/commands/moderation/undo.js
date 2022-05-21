@@ -110,22 +110,18 @@ class Undo extends SlashCommand {
 
           const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
           const moderationLogEntry = new EmbedBuilder()
-            .setAuthor({ name: `↩️ ${incident.action}` })
-            .setTitle(incident.member)
+            .setAuthor({ name: '↩️ Timeout cancelled' })
+            .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
+            .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
             .setThumbnail(member.displayAvatarURL())
-            .addFields([
-              { name: 'Moderator', value: incident.moderator },
-              { name: 'Reason', value: incident.reason }])
-            .setFooter({ text: `#${incident.id}` })
             .setTimestamp()
 
           moderationLog.send({ embeds: [moderationLogEntry] })
 
           const notification = new EmbedBuilder()
             .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-            .setTitle('Your timeout was cancelled')
-            .addFields([{ name: 'Reason', value: reason }])
-            .setFooter({ text: `Case #${incident.id}` })
+            .setTitle('Timeout cancelled')
+            .setDescription(`**Reason:** ${reason}`)
             .setTimestamp()
 
           try {
@@ -153,7 +149,7 @@ class Undo extends SlashCommand {
         }
 
         if (!record.strike) {
-          return interaction.reply({ content: `Case #${record.id} is not a strike.`, ephemeral: true })
+          return interaction.reply({ content: `Case ${record.id} is not a strike.`, ephemeral: true })
         }
 
         if (!record.strike.isActive) {
@@ -196,22 +192,18 @@ class Undo extends SlashCommand {
         const member = await interaction.guild.members.fetch(incident.memberId)
         const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
         const moderationLogEntry = new EmbedBuilder()
-          .setAuthor({ name: `↩️ ${incident.action}` })
-          .setTitle(incident.member)
+          .setAuthor({ name: '↩️ Strike removed' })
+          .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
+          .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
           .setThumbnail(member.displayAvatarURL())
-          .addFields([
-            { name: 'Moderator', value: incident.moderator },
-            { name: 'Reason', value: incident.reason }])
-          .setFooter({ text: `#${incident.id}` })
           .setTimestamp()
 
         moderationLog.send({ embeds: [moderationLogEntry] })
 
         const notification = new EmbedBuilder()
           .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-          .setTitle(`You lost a strike • ${strikesRemaining} remaining`)
-          .addFields([{ name: 'Reason', value: reason }])
-          .setFooter({ text: `Case #${incident.id}` })
+          .setTitle('Strike removed')
+          .setDescription(`**Reason:** ${reason}`)
           .setTimestamp()
 
         try {
@@ -255,13 +247,10 @@ class Undo extends SlashCommand {
 
           const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
           const moderationLogEntry = new EmbedBuilder()
-            .setAuthor({ name: `↩️ ${incident.action}` })
-            .setTitle(incident.member)
+            .setAuthor({ name: '↩️ Ban revoked' })
+            .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
+            .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
             .setThumbnail(ban.user.displayAvatarURL())
-            .addFields([
-              { name: 'Moderator', value: incident.moderator },
-              { name: 'Reason', value: incident.reason }])
-            .setFooter({ text: `#${incident.id}` })
             .setTimestamp()
 
           moderationLog.send({ embeds: [moderationLogEntry] })

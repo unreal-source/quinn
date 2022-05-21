@@ -86,11 +86,8 @@ class Ban extends SlashCommand {
       // We can't notify members after they leave, so we have to do it before banning
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-        .setTitle('You were banned from the server')
-        .addFields([
-          { name: 'Reason', value: reason },
-          { name: 'How to Appeal', value: 'If you want to challenge this decision, you can appeal it [here](). Our staff will review your appeal and respond as soon as possible.' }])
-        .setFooter({ text: `Case #${incident.id}` })
+        .setTitle('Banned from the server')
+        .setDescription(`**Reason:** ${reason}\n—\nYou may appeal the ban by filling out [this form](${process.env.BAN_APPEAL_LINK}). Our staff will review your appeal and respond as soon as possible.`)
         .setTimestamp()
 
       try {
@@ -104,13 +101,10 @@ class Ban extends SlashCommand {
 
       const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
       const moderationLogEntry = new EmbedBuilder()
-        .setAuthor({ name: `🚫 ${incident.action}` })
-        .setTitle(incident.member)
+        .setAuthor({ name: '⛔ Banned' })
+        .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
+        .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
         .setThumbnail(member.displayAvatarURL())
-        .addFields([
-          { name: 'Moderator', value: incident.moderator },
-          { name: 'Reason', value: incident.reason }])
-        .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
       moderationLog.send({ embeds: [moderationLogEntry] })

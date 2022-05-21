@@ -78,28 +78,21 @@ class Strike extends SlashCommand {
     // Strike 1 - Timeout for 10 mins
     if (activeStrikes === 1) {
       await member.timeout(ms(process.env.STRIKE_ONE_TIMEOUT_DURATION), reason)
-      await interaction.reply({ content: `${member.user.tag} was given strike ${activeStrikes} and was timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
+      await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
 
       const moderationLogEntry = new EmbedBuilder()
-        .setAuthor({ name: '🚩 Strike 1 • Timed out for 10 mins' })
-        .setTitle(incident.member)
+        .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
+        .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
+        .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
         .setThumbnail(member.displayAvatarURL())
-        .addFields([
-          { name: 'Moderator', value: incident.moderator },
-          { name: 'Reason', value: incident.reason },
-          { name: 'Expiration', value: time(incident.strike.expiration, 'R') }])
-        .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
       await moderationLog.send({ embeds: [moderationLogEntry] })
 
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-        .setTitle('Strike 1 • You were timed out for 10 mins')
-        .addFields([
-          { name: 'Reason', value: reason },
-          { name: 'Expiration', value: time(incident.strike.expiration, 'R') }])
-        .setFooter({ text: `Case #${incident.id}` })
+        .setTitle(`Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}`)
+        .setDescription(`**Reason:** ${reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
         .setTimestamp()
 
       try {
@@ -114,28 +107,21 @@ class Strike extends SlashCommand {
     // Strike 2 - Timeout for 1 hour
     if (activeStrikes === 2) {
       await member.timeout(ms(process.env.STRIKE_TWO_TIMEOUT_DURATION), reason)
-      await interaction.reply({ content: `${member.user.tag} got strike ${activeStrikes} and was timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
+      await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
 
       const moderationLogEntry = new EmbedBuilder()
-        .setAuthor({ name: '🚩 Strike 2 • Timed out for 1 hour' })
-        .setTitle(incident.member)
+        .setAuthor({ name: `🚩 Strike 2 • Timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}` })
+        .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
+        .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
         .setThumbnail(member.displayAvatarURL())
-        .addFields(
-          { name: 'Moderator', value: incident.moderator },
-          { name: 'Reason', value: incident.reason },
-          { name: 'Expiration', value: time(incident.strike.expiration, 'R') })
-        .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
       await moderationLog.send({ embeds: [moderationLogEntry] })
 
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-        .setTitle('Strike 2 • You were timed out for 1 hour')
-        .addFields(
-          { name: 'Reason', value: reason },
-          { name: 'Expiration', value: time(incident.strike.expiration, 'R') })
-        .setFooter({ text: `Case #${incident.id}` })
+        .setTitle(`Strike 2 • Timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}`)
+        .setDescription(`**Reason:** ${reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
         .setTimestamp()
 
       try {
@@ -152,11 +138,8 @@ class Strike extends SlashCommand {
       if (member.bannable) {
         const notification = new EmbedBuilder()
           .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-          .setTitle('Strike 3 • You were banned from the server')
-          .addFields(
-            { name: 'Reason', value: reason },
-            { name: 'Expiration', value: time(incident.strike.expiration, 'R') })
-          .setFooter({ text: `Case #${incident.id}` })
+          .setTitle('Strike 3 • Banned from the server')
+          .setDescription(`**Reason:** ${reason}\n—\nYou may appeal the ban by filling out [this form](${process.env.BAN_APPEAL_LINK}). Our staff will review your appeal and respond as soon as possible.`)
           .setTimestamp()
 
         try {
@@ -166,17 +149,13 @@ class Strike extends SlashCommand {
         }
 
         await member.ban({ days: 1, reason })
-        await interaction.reply({ content: `${member.user.tag} got strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
+        await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
 
         const moderationLogEntry = new EmbedBuilder()
           .setAuthor({ name: '🚩 Strike 3 • Banned from the server' })
-          .setTitle(incident.member)
+          .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
+          .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
           .setThumbnail(member.displayAvatarURL())
-          .addFields(
-            { name: 'Moderator', value: incident.moderator },
-            { name: 'Reason', value: incident.reason },
-            { name: 'Expiration', value: time(incident.strike.expiration, 'R') })
-          .setFooter({ text: `Case #${incident.id}` })
           .setTimestamp()
 
         await moderationLog.send({ embeds: [moderationLogEntry] })

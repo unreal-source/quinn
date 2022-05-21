@@ -58,9 +58,8 @@ class Kick extends SlashCommand {
       // We can't notify members after they leave, so we have to do it before kicking
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-        .setTitle('You were kicked from the server')
-        .addFields([{ name: 'Reason', value: reason }])
-        .setFooter({ text: `Case #${incident.id}` })
+        .setTitle('Kicked from the server')
+        .setDescription(`**Reason:** ${reason}`)
         .setTimestamp()
 
       try {
@@ -74,13 +73,10 @@ class Kick extends SlashCommand {
 
       const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
       const moderationLogEntry = new EmbedBuilder()
-        .setAuthor({ name: `🥾 ${incident.action}` })
-        .setTitle(incident.member)
-        .addFields([
-          { name: 'Moderator', value: incident.moderator },
-          { name: 'Reason', value: incident.reason }])
+        .setAuthor({ name: '🥾 Kicked' })
+        .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
+        .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
         .setThumbnail(member.displayAvatarURL())
-        .setFooter({ text: `Case #${incident.id}` })
         .setTimestamp()
 
       moderationLog.send({ embeds: [moderationLogEntry] })
