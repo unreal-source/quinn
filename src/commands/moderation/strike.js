@@ -73,21 +73,26 @@ class Strike extends SlashCommand {
       }
     })
 
-    const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+    const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
 
     // Strike 1 - Timeout for 10 mins
     if (activeStrikes === 1) {
       await member.timeout(ms(process.env.STRIKE_ONE_TIMEOUT_DURATION), reason)
       await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
 
-      const moderationLogEntry = new EmbedBuilder()
+      const moderationLogEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
         .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
         .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
         .setThumbnail(member.displayAvatarURL())
         .setTimestamp()
 
-      await moderationLog.send({ embeds: [moderationLogEntry] })
+      const moderationLogEntry = await moderationLogChannel.send({ embeds: [moderationLogEmbed] })
+
+      await prisma.case.update({
+        where: { id: incident.id },
+        data: { reference: moderationLogEntry.url }
+      })
 
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
@@ -109,14 +114,19 @@ class Strike extends SlashCommand {
       await member.timeout(ms(process.env.STRIKE_TWO_TIMEOUT_DURATION), reason)
       await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
 
-      const moderationLogEntry = new EmbedBuilder()
+      const moderationLogEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 2 • Timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}` })
         .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
         .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
         .setThumbnail(member.displayAvatarURL())
         .setTimestamp()
 
-      await moderationLog.send({ embeds: [moderationLogEntry] })
+      const moderationLogEntry = await moderationLogChannel.send({ embeds: [moderationLogEmbed] })
+
+      await prisma.case.update({
+        where: { id: incident.id },
+        data: { reference: moderationLogEntry.url }
+      })
 
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
@@ -151,14 +161,19 @@ class Strike extends SlashCommand {
         await member.ban({ days: 1, reason })
         await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
 
-        const moderationLogEntry = new EmbedBuilder()
+        const moderationLogEmbed = new EmbedBuilder()
           .setAuthor({ name: '🚩 Strike 3 • Banned from the server' })
           .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
           .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
           .setThumbnail(member.displayAvatarURL())
           .setTimestamp()
 
-        await moderationLog.send({ embeds: [moderationLogEntry] })
+        const moderationLogEntry = await moderationLogChannel.send({ embeds: [moderationLogEmbed] })
+
+        await prisma.case.update({
+          where: { id: incident.id },
+          data: { reference: moderationLogEntry.url }
+        })
 
         const strikes = await prisma.case.findMany({
           where: {
