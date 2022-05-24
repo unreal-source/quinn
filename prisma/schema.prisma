@@ -18,7 +18,7 @@ model Case {
   moderator          String
   moderatorId        String
   reason             String
-  reference          String
+  reference          String?
   strike             Strike?
   timeout            Timeout?
   createdAt          DateTime        @default(now())
