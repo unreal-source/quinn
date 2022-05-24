@@ -79,17 +79,22 @@ class Timeout extends SlashCommand {
       }
     })
 
-    await prisma.$disconnect()
-
-    const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
-    const moderationLogEntry = new EmbedBuilder()
+    const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+    const moderationLogEmbed = new EmbedBuilder()
       .setAuthor({ name: `⏳ Timed out for ${duration}` })
       .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
       .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
       .setThumbnail(member.displayAvatarURL())
       .setTimestamp()
 
-    moderationLog.send({ embeds: [moderationLogEntry] })
+    const moderationLogEntry = await moderationLogChannel.send({ embeds: [moderationLogEmbed] })
+
+    await prisma.case.update({
+      where: { id: incident.id },
+      data: { reference: moderationLogEntry.url }
+    })
+
+    await prisma.$disconnect()
 
     const notification = new EmbedBuilder()
       .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
