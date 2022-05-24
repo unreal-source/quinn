@@ -18,6 +18,7 @@ model Case {
   moderator          String
   moderatorId        String
   reason             String
+  reference          String
   strike             Strike?
   timeout            Timeout?
   createdAt          DateTime        @default(now())
@@ -38,21 +39,21 @@ model Timeout {
 }
 
 model JobPost {
-  id        Int      @id @default(autoincrement())
-  type      String
-  member    String
-  memberId  String
-  messageId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime
+  id                 Int      @id @default(autoincrement())
+  type               String
+  member             String
+  memberId           String
+  messageId          String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime
 }
 
 model Portfolio {
-  id        Int      @id @default(autoincrement())
-  type      String
-  member    String
-  memberId  String
-  messageId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime
+  id                 Int      @id @default(autoincrement())
+  type               String
+  member             String
+  memberId           String
+  messageId          String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime
 }
