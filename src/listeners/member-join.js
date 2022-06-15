@@ -20,7 +20,7 @@ class MemberJoin extends Listener {
 
     if (settings.shield) {
       await member.kick()
-      return memberLog.send({ content: `:warning: Shield prevented <@${member.user.id}> from joining the community` })
+      return memberLog.send({ content: `:shield: Shield prevented <@${member.user.id}> from joining the community` })
     }
 
     return memberLog.send({ content: `:green_circle: <@${member.user.id}> joined the community` })
