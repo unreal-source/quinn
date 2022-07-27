@@ -1,6 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
-import { time } from '@discordjs/builders'
+import { ApplicationCommandOptionType, EmbedBuilder, time } from 'discord.js'
 import { sortByKey } from '../../utilities/array-util.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg

@@ -1,6 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { EmbedBuilder } from 'discord.js'
-import { time } from '@discordjs/builders'
+import { EmbedBuilder, time } from 'discord.js'
 import { importJson } from '../../utilities/json-util.js'
 import { resolve } from 'node:path'
 
