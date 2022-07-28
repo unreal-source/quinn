@@ -11,7 +11,7 @@ class MemberLeave extends Listener {
 
   async run (member) {
     const memberLog = await this.client.channels.fetch(process.env.MEMBER_LOG_CHANNEL)
-    return memberLog.send({ content: `:red_circle: <@${member.user.id}> left the community` })
+    return memberLog.send({ content: `:red_circle: <@${member.user.id}> left the server` })
   }
 }
 

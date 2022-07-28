@@ -23,14 +23,14 @@ class MemberJoin extends Listener {
 
     if (settings.shield) {
       await member.kick()
-      return memberLog.send({ content: `:shield: Shield prevented <@${member.user.id}> from joining the community` })
+      return memberLog.send({ content: `:shield: Shield prevented <@${member.user.id}> from joining the server` })
     }
 
     if (member.joinedTimestamp > newMemberAgeLimit) {
-      return memberLog.send({ content: `:new: <@${member.user.id}> joined the community • Account created ${time(member.user.createdTimestam, 'R')}` })
+      return memberLog.send({ content: `:new: <@${member.user.id}> joined the server • Account created ${time(member.user.createdTimestam, 'R')}` })
     }
 
-    return memberLog.send({ content: `:green_circle: <@${member.user.id}> joined the community` })
+    return memberLog.send({ content: `:green_circle: <@${member.user.id}> joined the server` })
   }
 }
 
