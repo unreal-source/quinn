@@ -26,6 +26,10 @@ class MemberJoin extends Listener {
       return memberLog.send({ content: `:shield: Shield prevented <@${member.user.id}> from joining the server` })
     }
 
+    if (member.user.bot) {
+      return memberLog.send({ content: `:robot: <@${member.user.id}> was added to the server • \`BOT\`` })
+    }
+
     if (member.joinedTimestamp > newMemberAgeLimit) {
       return memberLog.send({ content: `:new: <@${member.user.id}> joined the server • Account created ${time(member.user.createdTimestam, 'R')}` })
     }
