@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, time } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, time } from 'discord.js'
 import ms from 'ms'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
@@ -32,7 +32,7 @@ class MegaBan extends SlashCommand {
             { name: '1 day ago', value: '1 day' },
             { name: '1 week ago', value: '1 week' },
             { name: '1 month ago', value: '1 month' },
-            { name: '5 years ago', value: '5 years' }
+            { name: '10 years ago', value: '10 years' }
           ]
         },
         {
@@ -82,10 +82,50 @@ class MegaBan extends SlashCommand {
           .setStyle(ButtonStyle.Secondary)
 
         const buttons = new ActionRowBuilder().addComponents([cancelButton, banButton])
-        return interaction.reply({ content: `Found ${matches.size} ${matches.size > 1 ? 'members' : 'member'} who joined after ${time(joinedCutoff)} with accounts created after ${time(createdCutoff)}:\n${matchMentions}`, components: [buttons], ephemeral: true })
-      }
+        const prompt = await interaction.reply({ content: `Found ${matches.size} ${matches.size > 1 ? 'members' : 'member'} who joined after ${time(joinedCutoff)} with accounts created after ${time(createdCutoff)}:\n${matchMentions}`, components: [buttons], ephemeral: true })
+        const collector = prompt.createMessageComponentCollector({ componentType: ComponentType.Button, time: ms('1 minute') })
 
-      return interaction.reply({ content: 'No matches found. You may need to adjust the parameters and try again.', ephemeral: true })
+        collector.on('collect', async i => {
+          if (i.customId === 'banButton') {
+            const successfulBans = []
+            const failedBans = []
+
+            for await (const member of matches.values()) {
+              if (member.bannable) {
+                await interaction.guild.members.ban(member, { days: messages, reason })
+                const strikes = await prisma.case.findMany({
+                  where: {
+                    memberId: member.id,
+                    strike: {
+                      is: { isActive: true }
+                    }
+                  }
+                })
+
+                await Promise.all(strikes.map(strike => {
+                  return prisma.strike.update({
+                    where: { id: strike.id },
+                    data: { isActive: false }
+                  })
+                }))
+
+                successfulBans.push(member)
+
+                prisma.$disconnect()
+              } else {
+                failedBans.push(member)
+              }
+            }
+
+            const successMentions = successfulBans.map(member => `<@${member.id}>`).join(' ')
+            const failMentions = failedBans.map(member => `<@${member.id}>`).join(' ')
+
+            return interaction.followUp({ content: `Successfully banned ${successfulBans.length} of ${matches.size} accounts. ${failedBans !== 0 ? `\n\n**Successful Bans**\n${successMentions}\n\n**Failed Bans**\n${failMentions}` : ''}`, ephemeral: true })
+          }
+        })
+      } else {
+        return interaction.reply({ content: 'No matches found. You may need to adjust the parameters and try again.', ephemeral: true })
+      }
     } catch (e) {
       console.error(e)
     }
