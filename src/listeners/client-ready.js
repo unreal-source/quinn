@@ -27,10 +27,11 @@ class ClientReady extends Listener {
     //   console.log('This job runs every minute')
     // })
 
+    const guild = await this.client.guilds.fetch(process.env.GUILD)
+    const prisma = new PrismaClient()
+
     Cron('* * * * *', async () => {
-      const guild = await this.client.guilds.fetch(process.env.GUILD)
       const now = new Date()
-      const prisma = new PrismaClient()
       const activeStrikes = await prisma.case.findMany({
         where: {
           action: 'Strike added',
@@ -79,7 +80,7 @@ class ClientReady extends Listener {
           console.error(e)
         }
 
-        await prisma.$disconnect()
+        prisma.$disconnect()
       }
     })
   }
