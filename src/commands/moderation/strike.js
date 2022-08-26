@@ -29,7 +29,7 @@ class Strike extends SlashCommand {
     const member = interaction.options.getMember('user')
     const reason = interaction.options.getString('reason')
     const now = new Date()
-    const expiration = new Date(now.setMinutes(now.getMinutes() + 1))
+    const expiration = new Date(now.setMilliseconds(now.getMilliseconds() + ms(process.env.STRIKE_DURATION)))
     const prisma = new PrismaClient()
 
     if (!member) {
