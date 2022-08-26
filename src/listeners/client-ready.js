@@ -71,7 +71,7 @@ class ClientReady extends Listener {
         const notification = new EmbedBuilder()
           .setAuthor({ name: guild.name, iconURL: guild.iconURL() })
           .setTitle('One of your strikes expired')
-          .setDescription(strikesRemaining === 0 ? 'You have no strikes remaining. ' : `You have ${strikesRemaining} strikes remaining`)
+          .setDescription(strikesRemaining === 0 ? 'No strikes remaining. ' : `${strikesRemaining} strikes remaining`)
           .setTimestamp()
 
         try {

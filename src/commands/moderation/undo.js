@@ -212,8 +212,8 @@ class Undo extends SlashCommand {
 
         const notification = new EmbedBuilder()
           .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-          .setTitle('Strike removed')
-          .setDescription(`**Reason:** ${reason}`)
+          .setTitle('One of your strikes was removed')
+          .setDescription(`${strikesRemaining === 0 ? 'No strikes remaining. ' : `${strikesRemaining} strikes remaining`}\n\n**Reason:** ${reason}`)
           .setTimestamp()
 
         try {
