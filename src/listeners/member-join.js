@@ -31,7 +31,7 @@ class MemberJoin extends Listener {
     }
 
     if (member.joinedTimestamp > newMemberAgeLimit) {
-      return memberLog.send({ content: `:new: <@${member.user.id}> joined the server • Account created ${time(member.user.createdTimestam, 'R')}` })
+      return memberLog.send({ content: `:new: <@${member.user.id}> joined the server • Account created ${time(member.user.createdAt, 'R')}` })
     }
 
     return memberLog.send({ content: `:green_circle: <@${member.user.id}> joined the server` })
