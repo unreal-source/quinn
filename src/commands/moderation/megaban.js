@@ -122,6 +122,14 @@ class MegaBan extends SlashCommand {
 
             return interaction.followUp({ content: `Successfully banned ${successfulBans.length} of ${matches.size} accounts. ${failedBans !== 0 ? `\n\n**Successful Bans**\n${successMentions}\n\n**Failed Bans**\n${failMentions}` : ''}`, ephemeral: true })
           }
+
+          if (i.customId === 'cancelButton') {
+            await buttons.components.forEach(button => {
+              button.setDisabled(true)
+            })
+
+            return i.update({ content: 'MegaBan cancelled.', components: [] })
+          }
         })
       } else {
         return interaction.reply({ content: 'No matches found. You may need to adjust the parameters and try again.', ephemeral: true })
