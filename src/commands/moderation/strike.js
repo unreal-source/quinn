@@ -96,7 +96,7 @@ class Strike extends SlashCommand {
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle(`Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}`)
-        .setDescription(`**Reason:** ${reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
+        .setDescription(`**Reason:** ${reason}\n**Expiration:** ${time(incident.strike.expiration, 'f')}`)
         .setTimestamp()
 
       try {
@@ -130,7 +130,7 @@ class Strike extends SlashCommand {
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle(`Strike 2 • Timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}`)
-        .setDescription(`**Reason:** ${reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
+        .setDescription(`**Reason:** ${reason}\n**Expiration:** ${time(incident.strike.expiration, 'f')}`)
         .setTimestamp()
 
       try {
