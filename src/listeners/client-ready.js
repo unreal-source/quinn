@@ -17,20 +17,12 @@ class ClientReady extends Listener {
   async run () {
     await this.client.guilds.cache.each(guild => console.log(`${this.client.user.tag} connected to ${guild.name}`))
 
-    // Remove expired strikes
-    // Cron('0 * * * *', () => {
-    //   console.log('This job runs every hour')
-    // })
-
-    // Monitor for unusually high number of member joins
-    // Cron('* * * * *', async () => {
-    //   console.log('This job runs every minute')
-    // })
-
     const guild = await this.client.guilds.fetch(process.env.GUILD)
     const prisma = new PrismaClient()
 
-    Cron('* * * * *', async () => {
+    // Remove expired strikes
+    Cron('0 * * * *', async () => {
+      console.log('This job runs every hour')
       const now = new Date()
       const activeStrikes = await prisma.case.findMany({
         where: {
