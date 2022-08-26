@@ -23,7 +23,6 @@ class ClientReady extends Listener {
 
     // Remove expired strikes
     Cron('0 * * * *', async () => {
-      console.log('This job runs every hour')
       const now = new Date()
       const activeStrikes = await prisma.case.findMany({
         where: {
@@ -38,8 +37,7 @@ class ClientReady extends Listener {
       const expiredStrikes = activeStrikes.filter(record => record.strike.expiration <= now)
 
       if (expiredStrikes.length === 0) {
-        await prisma.$disconnect()
-        return console.log('No expired strikes')
+        return prisma.$disconnect()
       }
 
       for await (const strike of expiredStrikes) {
