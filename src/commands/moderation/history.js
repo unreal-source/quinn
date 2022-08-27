@@ -29,18 +29,20 @@ class History extends SlashCommand {
     }
 
     const records = await prisma.case.findMany({
-      where: { memberId: member.id }
+      where: { memberId: member.id },
+      include: { strike: true }
     })
 
     if (records.length !== 0) {
       const timeouts = records.filter(record => record.action === 'Timed out')
       const strikes = records.filter(record => record.action === 'Strike added')
+      const activeStrikes = strikes.filter(record => record.strike.isActive === true)
       const kicks = records.filter(record => record.action === 'Kicked')
       const bans = records.filter(record => record.action === 'Banned')
 
       const timeoutsSummary = timeouts.length !== 1 ? `${timeouts.length} timeouts` : '1 timeout'
       const kicksSummary = kicks.length !== 1 ? `${kicks.length} kicks` : '1 kick'
-      const strikesSummary = strikes.length !== 1 ? `${strikes.length} strikes` : '1 strike'
+      const strikesSummary = strikes.length !== 1 ? `${strikes.length} strikes (${activeStrikes.length} active)` : `1 strike (${activeStrikes.length} active)`
       const bansSummary = bans.length !== 1 ? `${bans.length} bans` : '1 ban'
 
       const sortedRecords = sortByKey(records, 'createdAt')
