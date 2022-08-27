@@ -21,7 +21,8 @@ class Purge extends SlashCommand {
         {
           type: ApplicationCommandOptionType.String,
           name: 'reason',
-          description: 'The reason for purging these messages, if any'
+          description: 'The reason for purging these messages, if any',
+          required: true
         }
       ]
     })

@@ -18,7 +18,8 @@ class Kick extends SlashCommand {
         {
           type: ApplicationCommandOptionType.String,
           name: 'reason',
-          description: 'The reason for kicking them, if any'
+          description: 'The reason for kicking them, if any',
+          required: true
         }
       ]
     })

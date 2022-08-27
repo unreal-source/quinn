@@ -29,7 +29,8 @@ class Ban extends SlashCommand {
         {
           type: ApplicationCommandOptionType.String,
           name: 'reason',
-          description: 'The reason for banning them, if any'
+          description: 'The reason for banning them, if any',
+          required: true
         }
       ]
     })

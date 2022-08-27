@@ -16,7 +16,8 @@ class LockChannel extends SlashCommand {
         {
           type: ApplicationCommandOptionType.String,
           name: 'reason',
-          description: 'The reason for locking this channel'
+          description: 'The reason for locking this channel',
+          required: true
         }
       ]
     })

@@ -16,7 +16,8 @@ class UnlockChannel extends SlashCommand {
         {
           type: ApplicationCommandOptionType.String,
           name: 'reason',
-          description: 'The reason for unlocking this channel'
+          description: 'The reason for unlocking this channel',
+          required: true
         }
       ]
     })

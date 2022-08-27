@@ -19,7 +19,8 @@ class Strike extends SlashCommand {
         {
           type: ApplicationCommandOptionType.String,
           name: 'reason',
-          description: 'The reason for this strike, if any'
+          description: 'The reason for this strike, if any',
+          required: true
         }
       ]
     })

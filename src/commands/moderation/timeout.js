@@ -33,7 +33,8 @@ class Timeout extends SlashCommand {
         {
           type: ApplicationCommandOptionType.String,
           name: 'reason',
-          description: 'The reason for timing them out, if any'
+          description: 'The reason for timing them out, if any',
+          required: true
         }
       ]
     })
