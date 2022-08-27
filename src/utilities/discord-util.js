@@ -12,3 +12,10 @@ export function createModalCollector (client, interaction) {
     max: 1
   })
 }
+
+export function isStaff (member) {
+  const isAdmin = member.roles.cache.some(role => role.id === process.env.ADMIN_ROLE)
+  const isModerator = member.roles.cache.some(role => role.id === process.env.MODERATOR_ROLE)
+
+  return isAdmin || isModerator
+}

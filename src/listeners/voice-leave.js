@@ -1,4 +1,5 @@
 import { Listener } from 'hiei.js'
+import { isStaff } from '../utilities/discord-util.js'
 
 class VoiceLeave extends Listener {
   constructor () {
@@ -16,8 +17,7 @@ class VoiceLeave extends Listener {
 
     const voiceLog = await this.client.channels.fetch(process.env.VOICE_LOG_CHANNEL)
     const canStream = newState.member.roles.cache.some(role => role.id === process.env.STREAMING_ROLE)
-    const isModerator = newState.member.roles.cache.some(role => role.id === process.env.MODERATOR_ROLE)
-    const username = isModerator ? `:shield: **${newState.member.displayName}**` : `<@${newState.member.id}>`
+    const username = isStaff(newState.member) ? `:shield: **${newState.member.displayName}**` : `<@${newState.member.id}>`
 
     if (oldState.channel !== null && newState.channel === null) {
       if (canStream) {
