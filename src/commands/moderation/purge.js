@@ -14,15 +14,15 @@ class Purge extends SlashCommand {
           required: true
         },
         {
-          type: ApplicationCommandOptionType.User,
-          name: 'author',
-          description: 'Only delete messages from this user'
-        },
-        {
           type: ApplicationCommandOptionType.String,
           name: 'reason',
           description: 'The reason for purging these messages, if any',
           required: true
+        },
+        {
+          type: ApplicationCommandOptionType.User,
+          name: 'author',
+          description: 'Only delete messages from this user'
         }
       ]
     })
