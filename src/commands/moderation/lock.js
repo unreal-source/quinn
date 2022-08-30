@@ -19,7 +19,8 @@ class LockChannel extends SlashCommand {
           description: 'The reason for locking this channel',
           required: true
         }
-      ]
+      ],
+      defaultMemberPermissions: PermissionFlagsBits.BanMembers
     })
   }
 

@@ -19,7 +19,8 @@ class UnlockChannel extends SlashCommand {
           description: 'The reason for unlocking this channel',
           required: true
         }
-      ]
+      ],
+      defaultMemberPermissions: PermissionFlagsBits.BanMembers
     })
   }
 
