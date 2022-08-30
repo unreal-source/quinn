@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -32,7 +32,8 @@ class Ban extends SlashCommand {
           description: 'The reason for banning them, if any',
           required: true
         }
-      ]
+      ],
+      defaultMemberPermissions: PermissionFlagsBits.BanMembers
     })
   }
 

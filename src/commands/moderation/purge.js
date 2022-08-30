@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 
 class Purge extends SlashCommand {
   constructor () {
@@ -24,7 +24,8 @@ class Purge extends SlashCommand {
           name: 'author',
           description: 'Only delete messages from this user'
         }
-      ]
+      ],
+      defaultMemberPermissions: PermissionFlagsBits.BanMembers
     })
   }
 

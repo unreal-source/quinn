@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { ApplicationCommandOptionType, EmbedBuilder, PermissionsBitField } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 
 class LockChannel extends SlashCommand {
   constructor () {
@@ -27,15 +27,14 @@ class LockChannel extends SlashCommand {
     const channel = interaction.options.getChannel('channel')
     const reason = interaction.options.getString('reason')
     const overwrites = channel.permissionOverwrites
-    const flags = PermissionsBitField.Flags
 
     // abort if channel is not visible to @everyone
-    if (overwrites.cache.get(interaction.guild.id).deny.has(flags.ViewChannel)) {
+    if (overwrites.cache.get(interaction.guild.id).deny.has(PermissionFlagsBits.ViewChannel)) {
       return interaction.reply({ content: `${channel} is not visible to regular members so there's no need to lock it.`, ephemeral: true })
     }
 
     // abort if channel already restricts chat and reactions for @everyone
-    if (overwrites.cache.get(interaction.guild.id).deny.has([flags.SendMessages, flags.AddReactions])) {
+    if (overwrites.cache.get(interaction.guild.id).deny.has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.AddReactions])) {
       return interaction.reply({ content: `${channel} is already locked.`, ephemeral: true })
     }
 

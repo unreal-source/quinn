@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { ApplicationCommandOptionType, EmbedBuilder, time } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time } from 'discord.js'
 import ms from 'ms'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
@@ -22,7 +22,8 @@ class Strike extends SlashCommand {
           description: 'The reason for this strike, if any',
           required: true
         }
-      ]
+      ],
+      defaultMemberPermissions: PermissionFlagsBits.BanMembers
     })
   }
 

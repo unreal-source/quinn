@@ -1,10 +1,13 @@
 import { MessageCommand } from 'hiei.js'
-import { ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, channelMention, userMention, time } from 'discord.js'
+import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, TextInputBuilder, TextInputStyle, channelMention, userMention, time } from 'discord.js'
 import { createModalCollector } from '../../utilities/discord-util.js'
 
 class ReportToModerators extends MessageCommand {
   constructor () {
-    super({ name: 'Report to Moderators' })
+    super({
+      name: 'Report to Moderators',
+      defaultMemberPermissions: PermissionFlagsBits.SendMessages
+    })
   }
 
   async run (interaction, message) {

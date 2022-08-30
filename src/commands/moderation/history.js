@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { ApplicationCommandOptionType, EmbedBuilder, time } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time } from 'discord.js'
 import { sortByKey } from '../../utilities/array-util.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
@@ -16,7 +16,8 @@ class History extends SlashCommand {
           description: 'The user who\'s history you want to see',
           required: true
         }
-      ]
+      ],
+      defaultMemberPermissions: PermissionFlagsBits.BanMembers
     })
   }
 

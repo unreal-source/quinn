@@ -1,5 +1,5 @@
 import { SlashCommand } from 'hiei.js'
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -26,7 +26,8 @@ class Undo extends SlashCommand {
               description: 'The reason for undoing this timeout',
               required: true
             }
-          ]
+          ],
+          defaultMemberPermissions: PermissionFlagsBits.BanMembers
         },
         {
           type: ApplicationCommandOptionType.Subcommand,
