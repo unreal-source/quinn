@@ -26,8 +26,7 @@ class Undo extends SlashCommand {
               description: 'The reason for undoing this timeout',
               required: true
             }
-          ],
-          defaultMemberPermissions: PermissionFlagsBits.BanMembers
+          ]
         },
         {
           type: ApplicationCommandOptionType.Subcommand,
@@ -67,7 +66,8 @@ class Undo extends SlashCommand {
             }
           ]
         }
-      ]
+      ],
+      defaultMemberPermissions: PermissionFlagsBits.BanMembers
     })
   }
 
