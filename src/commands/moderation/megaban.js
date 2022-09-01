@@ -31,8 +31,7 @@ class MegaBan extends SlashCommand {
             { name: '1 hour ago', value: '1 hour' },
             { name: '1 day ago', value: '1 day' },
             { name: '1 week ago', value: '1 week' },
-            { name: '1 month ago', value: '1 month' },
-            { name: '10 years ago', value: '10 years' }
+            { name: '1 month ago', value: '1 month' }
           ]
         },
         {
@@ -121,7 +120,16 @@ class MegaBan extends SlashCommand {
             const successMentions = successfulBans.map(member => `<@${member.id}>`).join(' ')
             const failMentions = failedBans.map(member => `<@${member.id}>`).join(' ')
 
-            return interaction.followUp({ content: `Successfully banned ${successfulBans.length} of ${matches.size} accounts. ${failedBans !== 0 ? `\n\n**Successful Bans**\n${successMentions}\n\n**Failed Bans**\n${failMentions}` : ''}`, ephemeral: true })
+            await interaction.followUp({ content: `Successfully banned ${successfulBans.length} of ${matches.size} accounts. ${failedBans !== 0 ? `\n\n**Successful Bans**\n${successMentions}\n\n**Failed Bans**\n${failMentions}` : ''}`, ephemeral: true })
+
+            const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+            const moderationLogEntry = new EmbedBuilder()
+              .setAuthor({ name: '☢️ MegaBan' })
+              .setDescription(`**Accounts Banned:** ${successfulBans.length}\n**Criteria:** Created up to ${created} ago • joined server up to ${joined} ago\n**Reason:** ${reason}`)
+              .setFooter({ text: interaction.user.tag })
+              .setTimestamp()
+
+            return moderationLog.send({ embeds: [moderationLogEntry] })
           }
 
           if (i.customId === 'cancelButton') {
