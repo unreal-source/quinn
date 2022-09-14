@@ -30,7 +30,7 @@ class UnlockChannel extends SlashCommand {
     const reason = interaction.options.getString('reason')
     const overwrites = channel.permissionOverwrites
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     // abort if channel is not visible to @everyone
     if (overwrites.cache.get(interaction.guild.id).deny.has(PermissionFlagsBits.ViewChannel)) {

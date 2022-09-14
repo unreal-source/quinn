@@ -71,7 +71,7 @@ class MegaBan extends SlashCommand {
       const matches = members.filter(member => member.joinedTimestamp > joinedCutoff && member.user.createdTimestamp > createdCutoff)
       const matchMentions = matches.map(member => `<@${member.id}>`).join(' ')
 
-      log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+      log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
       if (matches.size !== 0) {
         const banButton = new ButtonBuilder()

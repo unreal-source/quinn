@@ -35,7 +35,7 @@ class Reason extends SlashCommand {
       where: { id: caseNumber }
     })
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     if (!originalCase) {
       return interaction.reply({ content: 'Case not found.', ephemeral: true })

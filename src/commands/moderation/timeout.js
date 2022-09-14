@@ -48,7 +48,7 @@ class Timeout extends SlashCommand {
     const reason = interaction.options.getString('reason')
     const prisma = new PrismaClient()
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     if (!member) {
       return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })

@@ -15,7 +15,7 @@ class BotUptime extends SlashCommand {
   run (interaction) {
     const uptime = ms(this.client.uptime, { long: true })
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     return interaction.reply({ content: `:stopwatch: I have been online for \`${uptime}\``, ephemeral: true })
   }

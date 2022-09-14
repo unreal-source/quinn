@@ -16,7 +16,7 @@ class BotVersion extends SlashCommand {
   async run (interaction) {
     const meta = await importJson(resolve(process.cwd(), 'package.json'))
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     return interaction.reply({ content: `Current version is \`${meta.version}\``, ephemeral: true })
   }

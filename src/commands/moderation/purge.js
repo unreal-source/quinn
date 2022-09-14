@@ -35,7 +35,7 @@ class Purge extends SlashCommand {
     const author = interaction.options.getMember('author')
     const reason = interaction.options.getString('reason')
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     if (author) {
       const messages = await interaction.channel.messages.fetch()

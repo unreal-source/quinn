@@ -16,7 +16,7 @@ class BotPing extends SlashCommand {
     const heartbeat = this.client.ws.ping
     const latency = response.createdTimestamp - interaction.createdTimestamp
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name.name })
 
     return interaction.editReply({ content: `:ping_pong: Ping... Pong! Roundtrip latency is \`${latency}ms\`. Heartbeat is \`${heartbeat}ms\`.` })
   }

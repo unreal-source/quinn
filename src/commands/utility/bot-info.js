@@ -23,7 +23,7 @@ class BotInfo extends SlashCommand {
       .setDescription(`${description}\n**Version:** ${meta.version}\n**Last Login:** ${time(this.client.readyAt)} • ${time(this.client.readyAt, 'R')}\n**Heartbeat:** ${this.client.ws.ping}ms\n**Memory Usage:** ${Math.round(memoryUsed * 100) / 100} MB\n—\n${links}`)
       .setThumbnail(this.client.user.displayAvatarURL())
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name.name })
 
     return interaction.reply({ embeds: [info] })
   }

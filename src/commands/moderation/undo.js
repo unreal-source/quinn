@@ -76,7 +76,7 @@ class Undo extends SlashCommand {
     const subcommand = interaction.options.getSubcommand()
     const prisma = new PrismaClient()
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     switch (subcommand) {
       case 'timeout': {

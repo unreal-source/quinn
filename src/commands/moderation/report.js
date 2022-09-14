@@ -24,7 +24,7 @@ class ReportToModerators extends MessageCommand {
     const firstRow = new ActionRowBuilder().addComponents(reasonInput)
     reportModal.addComponents(firstRow)
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     await interaction.showModal(reportModal)
 
@@ -40,7 +40,7 @@ class ReportToModerators extends MessageCommand {
 
         await reportChannel.send({ content: `${userMention(i.member.id)} reported a message in ${channelMention(message.channel.id)}. Reason:\n> ${reason}\n_ _`, embeds: [reportEntry] })
 
-        log.info({ event: 'user-report', channel: interaction.channel })
+        log.info({ event: 'user-report', channel: interaction.channel.name })
 
         return i.reply({ content: 'Thank you for submitting your report. A moderator will review it as soon as possible. ', ephemeral: true })
       }
