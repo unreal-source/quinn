@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import log from '../../utilities/logger.js'
 
 class UnlockChannel extends SlashCommand {
   constructor () {
@@ -28,6 +29,8 @@ class UnlockChannel extends SlashCommand {
     const channel = interaction.options.getChannel('channel')
     const reason = interaction.options.getString('reason')
     const overwrites = channel.permissionOverwrites
+
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
 
     // abort if channel is not visible to @everyone
     if (overwrites.cache.get(interaction.guild.id).deny.has(PermissionFlagsBits.ViewChannel)) {

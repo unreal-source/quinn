@@ -1,6 +1,7 @@
 import { Listener } from 'hiei.js'
 import Cron from 'croner'
 import { EmbedBuilder, roleMention } from 'discord.js'
+import log from '../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -14,8 +15,8 @@ class ClientReady extends Listener {
     })
   }
 
-  async run () {
-    await this.client.guilds.cache.each(guild => console.log(`${this.client.user.tag} connected to ${guild.name}`))
+  async run (client) {
+    await client.guilds.cache.each(guild => log.info({ event: 'client-ready', guild: guild.name }, `${client.user.username} connected to ${guild.name}`))
 
     const guild = await this.client.guilds.fetch(process.env.GUILD)
     const prisma = new PrismaClient()

@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import log from '../../utilities/logger.js'
 
 class Purge extends SlashCommand {
   constructor () {
@@ -33,6 +34,8 @@ class Purge extends SlashCommand {
     const quantity = interaction.options.getInteger('quantity')
     const author = interaction.options.getMember('author')
     const reason = interaction.options.getString('reason')
+
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
 
     if (author) {
       const messages = await interaction.channel.messages.fetch()

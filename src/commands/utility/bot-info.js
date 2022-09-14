@@ -2,6 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { EmbedBuilder, PermissionFlagsBits, time } from 'discord.js'
 import { importJson } from '../../utilities/json-util.js'
 import { resolve } from 'node:path'
+import log from '../../utilities/logger.js'
 
 class BotInfo extends SlashCommand {
   constructor () {
@@ -21,6 +22,8 @@ class BotInfo extends SlashCommand {
       .setTitle(this.client.user.tag)
       .setDescription(`${description}\n**Version:** ${meta.version}\n**Last Login:** ${time(this.client.readyAt)} • ${time(this.client.readyAt, 'R')}\n**Heartbeat:** ${this.client.ws.ping}ms\n**Memory Usage:** ${Math.round(memoryUsed * 100) / 100} MB\n—\n${links}`)
       .setThumbnail(this.client.user.displayAvatarURL())
+
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     return interaction.reply({ embeds: [info] })
   }

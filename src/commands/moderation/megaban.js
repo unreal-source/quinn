@@ -1,6 +1,7 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, PermissionFlagsBits, time } from 'discord.js'
 import ms from 'ms'
+import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -69,6 +70,8 @@ class MegaBan extends SlashCommand {
       const members = await interaction.guild.members.fetch({ force: true })
       const matches = members.filter(member => member.joinedTimestamp > joinedCutoff && member.user.createdTimestamp > createdCutoff)
       const matchMentions = matches.map(member => `<@${member.id}>`).join(' ')
+
+      log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
 
       if (matches.size !== 0) {
         const banButton = new ButtonBuilder()

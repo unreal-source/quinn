@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -33,6 +34,8 @@ class Reason extends SlashCommand {
     const originalCase = await prisma.case.findUnique({
       where: { id: caseNumber }
     })
+
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
 
     if (!originalCase) {
       return interaction.reply({ content: 'Case not found.', ephemeral: true })

@@ -1,6 +1,7 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time } from 'discord.js'
 import { sortByKey } from '../../utilities/array-util.js'
+import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -24,6 +25,8 @@ class History extends SlashCommand {
   async run (interaction) {
     const member = interaction.options.getMember('user')
     const prisma = new PrismaClient()
+
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
 
     if (!member) {
       return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })

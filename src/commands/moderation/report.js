@@ -1,6 +1,7 @@
 import { MessageCommand } from 'hiei.js'
 import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, TextInputBuilder, TextInputStyle, channelMention, userMention, time } from 'discord.js'
 import { createModalCollector } from '../../utilities/discord-util.js'
+import log from '../../utilities/logger.js'
 
 class ReportToModerators extends MessageCommand {
   constructor () {
@@ -23,6 +24,8 @@ class ReportToModerators extends MessageCommand {
     const firstRow = new ActionRowBuilder().addComponents(reasonInput)
     reportModal.addComponents(firstRow)
 
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
+
     await interaction.showModal(reportModal)
 
     const collector = createModalCollector(this.client, interaction)
@@ -36,6 +39,9 @@ class ReportToModerators extends MessageCommand {
           .setDescription(`**Author:** ${message.author.tag}\n**Author ID:** ${message.author.id}\n**Content:** ${message.content}\n**Timestamp:** ${time(message.createdAt)} • ${time(message.createdAt, 'R')}\n[Jump to Message](${message.url})`)
 
         await reportChannel.send({ content: `${userMention(i.member.id)} reported a message in ${channelMention(message.channel.id)}. Reason:\n> ${reason}\n_ _`, embeds: [reportEntry] })
+
+        log.info({ event: 'user-report', channel: interaction.channel })
+
         return i.reply({ content: 'Thank you for submitting your report. A moderator will review it as soon as possible. ', ephemeral: true })
       }
     })

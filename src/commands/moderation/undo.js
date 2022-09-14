@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -74,6 +75,8 @@ class Undo extends SlashCommand {
   async run (interaction) {
     const subcommand = interaction.options.getSubcommand()
     const prisma = new PrismaClient()
+
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel })
 
     switch (subcommand) {
       case 'timeout': {
