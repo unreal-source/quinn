@@ -40,7 +40,7 @@ class History extends SlashCommand {
     if (records.length !== 0) {
       const timeouts = records.filter(record => record.action === 'Timed out')
       const strikes = records.filter(record => record.action === 'Strike added')
-      const activeStrikes = strikes.filter(record => record.strike.isActive === true)
+      const activeStrikes = strikes.filter(record => record.strike?.isActive)
       const kicks = records.filter(record => record.action === 'Kicked')
       const bans = records.filter(record => record.action === 'Banned')
 
