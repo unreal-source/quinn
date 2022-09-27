@@ -50,26 +50,29 @@ class ClientReady extends Listener {
         })
 
         const member = await guild.members.fetch(strike.memberId)
-        const strikesRemaining = await prisma.case.count({
-          where: {
-            action: 'Strike added',
-            memberId: member.id,
-            strike: {
-              isActive: true
+
+        if (member) {
+          const strikesRemaining = await prisma.case.count({
+            where: {
+              action: 'Strike added',
+              memberId: member.id,
+              strike: {
+                isActive: true
+              }
             }
+          })
+
+          const notification = new EmbedBuilder()
+            .setAuthor({ name: guild.name, iconURL: guild.iconURL() })
+            .setTitle('One of your strikes expired')
+            .setDescription(strikesRemaining === 0 ? 'No strikes remaining. ' : `${strikesRemaining} strikes remaining`)
+            .setTimestamp()
+
+          try {
+            await member.send({ embeds: [notification] })
+          } catch (e) {
+            console.error(e)
           }
-        })
-
-        const notification = new EmbedBuilder()
-          .setAuthor({ name: guild.name, iconURL: guild.iconURL() })
-          .setTitle('One of your strikes expired')
-          .setDescription(strikesRemaining === 0 ? 'No strikes remaining. ' : `${strikesRemaining} strikes remaining`)
-          .setTimestamp()
-
-        try {
-          await member.send({ embeds: [notification] })
-        } catch (e) {
-          console.error(e)
         }
 
         prisma.$disconnect()
