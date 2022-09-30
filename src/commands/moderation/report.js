@@ -1,5 +1,5 @@
 import { MessageCommand } from 'hiei.js'
-import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, TextInputBuilder, TextInputStyle, channelMention, userMention, time } from 'discord.js'
+import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, TextInputBuilder, TextInputStyle, channelMention, roleMention, userMention, time } from 'discord.js'
 import { createModalCollector } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 
@@ -38,7 +38,7 @@ class ReportToModerators extends MessageCommand {
           .setAuthor({ name: '⚠️ Reported Message' })
           .setDescription(`**Author:** ${message.author.tag}\n**Author ID:** ${message.author.id}\n**Content:** ${message.content}\n**Timestamp:** ${time(message.createdAt)} • ${time(message.createdAt, 'R')}\n[Jump to Message](${message.url})`)
 
-        await reportChannel.send({ content: `${userMention(i.member.id)} reported a message in ${channelMention(message.channel.id)}. Reason:\n> ${reason}\n_ _`, embeds: [reportEntry] })
+        await reportChannel.send({ content: `${roleMention(process.env.MODERATOR_ROLE)} → **${userMention(i.member.id)} reported a message in ${channelMention(message.channel.id)}.**\nReason: ${reason}\n`, embeds: [reportEntry] })
 
         log.info({ event: 'user-report', channel: interaction.channel.name })
 
