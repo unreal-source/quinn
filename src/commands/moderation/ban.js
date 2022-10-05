@@ -42,6 +42,7 @@ class Ban extends SlashCommand {
     const member = interaction.options.getMember('user')
     const messages = interaction.options.getInteger('messages')
     const reason = interaction.options.getString('reason')
+    let canNotify = true
     const prisma = new PrismaClient()
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
@@ -96,11 +97,17 @@ class Ban extends SlashCommand {
       try {
         await member.send({ embeds: [notification] })
       } catch (e) {
-        await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
+        canNotify = false
       }
 
-      await member.ban({ deleteMessageDays: messages, reason })
-      await interaction.reply({ content: `${member.user.tag} was banned from the server.`, ephemeral: true })
+      if (canNotify) {
+        await interaction.reply({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
+        await member.ban({ deleteMessageDays: messages, reason })
+        await interaction.followUp({ content: `${member.user.tag} was banned from the server.`, ephemeral: true })
+      } else {
+        await member.ban({ deleteMessageDays: messages, reason })
+        await interaction.reply({ content: `${member.user.tag} was banned from the server.`, ephemeral: true })
+      }
 
       const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
       const moderationLogEmbed = new EmbedBuilder()
