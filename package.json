@@ -1,7 +1,7 @@
 {
   "name": "quinn",
   "description": "The bot you don't want to hear from",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "type": "module",
   "main": "src/quinn.js",
   "engines": {
