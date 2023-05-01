@@ -13,7 +13,7 @@
     "start": "node src/quinn.js"
   },
   "dependencies": {
-    "@prisma/client": "^4.3.0",
+    "@prisma/client": "^4.13.0",
     "@sentry/node": "^7.12.1",
     "@sentry/tracing": "^7.39.0",
     "croner": "^4.3.16",
