@@ -15,6 +15,12 @@ const transport = pino.transport({
   }
 })
 
-const log = pino(transport)
+const localLog = {
+  info: console.log,
+  warn: console.warn,
+  error: console.error
+}
+
+const log = transport.host ? pino(transport) : localLog
 
 export default log
