@@ -1,6 +1,7 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time } from 'discord.js'
 import { sortByKey } from '../../utilities/array-util.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
@@ -55,14 +56,14 @@ class History extends SlashCommand {
       }).join('\n\n')
 
       const historyEmbed = new EmbedBuilder()
-        .setTitle(member.user.tag)
+        .setTitle(getUsername(member))
         .setDescription(`${timeoutsSummary} • ${strikesSummary} • ${kicksSummary} • ${bansSummary}\n—\n${history}`)
         .setThumbnail(member.displayAvatarURL())
 
       return interaction.reply({ embeds: [historyEmbed], ephemeral: true })
     }
 
-    return interaction.reply({ content: `${member.user.tag} has no history.`, ephemeral: true })
+    return interaction.reply({ content: `${getUsername(member)} has no history.`, ephemeral: true })
   }
 }
 

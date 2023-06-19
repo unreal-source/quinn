@@ -19,3 +19,11 @@ export function isStaff (member) {
 
   return isAdmin || isModerator
 }
+
+export function getUsername (member) {
+  if (member.user.tag.endsWith('#0')) {
+    return member.user.username
+  } else {
+    return member.user.tag
+  }
+}

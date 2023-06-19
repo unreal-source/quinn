@@ -2,6 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, PermissionFlagsBits, time } from 'discord.js'
 import ms from 'ms'
 import log from '../../utilities/logger.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -129,7 +130,7 @@ class MegaBan extends SlashCommand {
             const moderationLogEntry = new EmbedBuilder()
               .setAuthor({ name: '☢️ MegaBan' })
               .setDescription(`**Accounts Banned:** ${successfulBans.length}\n**Criteria:** Created up to ${created} ago • joined server up to ${joined} ago\n**Reason:** ${reason}`)
-              .setFooter({ text: interaction.user.tag })
+              .setFooter({ text: getUsername(interaction.member) })
               .setTimestamp()
 
             return moderationLog.send({ embeds: [moderationLogEntry] })

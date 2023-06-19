@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
@@ -54,7 +55,7 @@ class Reason extends SlashCommand {
     const moderationLogEntry = new EmbedBuilder()
       .setAuthor({ name: '📝 Reason updated' })
       .setDescription(`**Case:** ${updatedCase.id}\n**Old Reason:** ${originalCase.reason}\n**New Reason:** ${updatedCase.reason}`)
-      .setFooter({ text: interaction.member.user.tag })
+      .setFooter({ text: getUsername(interaction.member) })
       .setTimestamp()
 
     moderationLog.send({ embeds: [moderationLogEntry] })

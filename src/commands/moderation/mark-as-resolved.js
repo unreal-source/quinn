@@ -1,5 +1,6 @@
 import { MessageCommand } from 'hiei.js'
 import { PermissionFlagsBits, time } from 'discord.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 
 class MarkAsResolved extends MessageCommand {

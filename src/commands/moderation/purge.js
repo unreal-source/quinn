@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 
 class Purge extends SlashCommand {
@@ -48,7 +49,7 @@ class Purge extends SlashCommand {
       const moderationLogEntry = new EmbedBuilder()
         .setAuthor({ name: `🧹 ${quantity} messages deleted` })
         .setDescription(`**Channel:** ${interaction.channel}\n**Author:** ${author.user.tag}\n**Author ID:** ${author.id}\n**Reason:** ${reason}`)
-        .setFooter({ text: interaction.user.tag })
+        .setFooter({ text: getUsername(interaction.member) })
         .setTimestamp()
 
       return moderationLog.send({ embeds: [moderationLogEntry] })
@@ -61,7 +62,7 @@ class Purge extends SlashCommand {
     const moderationLogEntry = new EmbedBuilder()
       .setAuthor({ name: `🧹 ${quantity} messages deleted` })
       .setDescription(`**Channel:** ${interaction.channel}\n**Reason:** ${reason}`)
-      .setFooter({ text: interaction.user.tag })
+      .setFooter({ text: getUsername(interaction.member) })
       .setTimestamp()
 
     return moderationLog.send({ embeds: [moderationLogEntry] })

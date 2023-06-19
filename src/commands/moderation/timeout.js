@@ -2,6 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time } from 'discord.js'
 import ms from 'ms'
 import log from '../../utilities/logger.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -63,18 +64,18 @@ class Timeout extends SlashCommand {
     }
 
     if (member.isCommunicationDisabled()) {
-      return interaction.reply({ content: `${member.user.tag} is already timed out until ${time(member.communicationDisabledUntil)}.`, ephemeral: true })
+      return interaction.reply({ content: `${getUsername(member)} is already timed out until ${time(member.communicationDisabledUntil)}.`, ephemeral: true })
     }
 
     await member.timeout(ms(duration), reason)
-    await interaction.reply({ content: `${member.user.tag} was timed out for ${duration}.`, ephemeral: true })
+    await interaction.reply({ content: `${getUsername(member)} was timed out for ${duration}.`, ephemeral: true })
 
     const incident = await prisma.case.create({
       data: {
         action: 'Timed out',
-        member: member.user.tag,
+        member: getUsername(member),
         memberId: member.id,
-        moderator: interaction.member.user.tag,
+        moderator: getUsername(interaction.member),
         moderatorId: interaction.member.id,
         reason,
         timeout: {

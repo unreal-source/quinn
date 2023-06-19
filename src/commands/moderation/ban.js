@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
@@ -65,9 +66,9 @@ class Ban extends SlashCommand {
       const incident = await prisma.case.create({
         data: {
           action: 'Banned',
-          member: member.user.tag,
+          member: getUsername(member),
           memberId: member.id,
-          moderator: interaction.member.user.tag,
+          moderator: getUsername(interaction.member),
           moderatorId: interaction.member.id,
           reason
         }
@@ -105,10 +106,10 @@ class Ban extends SlashCommand {
       if (canNotify) {
         await interaction.reply({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
         await member.ban({ deleteMessageDays: messages, reason })
-        await interaction.followUp({ content: `${member.user.tag} was banned from the server.`, ephemeral: true })
+        await interaction.followUp({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
       } else {
         await member.ban({ deleteMessageDays: messages, reason })
-        await interaction.reply({ content: `${member.user.tag} was banned from the server.`, ephemeral: true })
+        await interaction.reply({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
       }
 
       const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)

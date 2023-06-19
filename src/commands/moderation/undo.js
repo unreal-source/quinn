@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
@@ -97,14 +98,14 @@ class Undo extends SlashCommand {
 
         if (member.isCommunicationDisabled()) {
           await member.timeout(null, reason)
-          await interaction.reply({ content: `${member.user.tag} is no longer timed out.`, ephemeral: true })
+          await interaction.reply({ content: `${getUsername(member)} is no longer timed out.`, ephemeral: true })
 
           const incident = await prisma.case.create({
             data: {
               action: 'Timeout cancelled',
-              member: member.user.tag,
+              member: getUsername(member),
               memberId: member.id,
-              moderator: interaction.member.user.tag,
+              moderator: getUsername(interaction.member),
               moderatorId: interaction.member.id,
               reason
             }
@@ -139,7 +140,7 @@ class Undo extends SlashCommand {
             await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
           }
         } else {
-          return interaction.reply({ content: `${member.user.tag} isn not timed out.`, ephemeral: true })
+          return interaction.reply({ content: `${getUsername(member)} isn not timed out.`, ephemeral: true })
         }
         break
       }
@@ -190,7 +191,7 @@ class Undo extends SlashCommand {
             action: 'Strike removed',
             member: record.member,
             memberId: record.memberId,
-            moderator: interaction.member.user.tag,
+            moderator: getUsername(interaction.member),
             moderatorId: interaction.member.id,
             reason
           }
@@ -251,7 +252,7 @@ class Undo extends SlashCommand {
               action: 'Ban revoked',
               member: ban.user.tag,
               memberId: ban.user.id,
-              moderator: interaction.member.user.tag,
+              moderator: getUsername(interaction.member),
               moderatorId: interaction.member.id,
               reason
             }
@@ -276,7 +277,7 @@ class Undo extends SlashCommand {
         } catch {
           try {
             const member = await interaction.guild.members.fetch(id)
-            return interaction.reply({ content: `${member.user.tag} is not banned.`, ephemeral: true })
+            return interaction.reply({ content: `${getUsername(member)} is not banned.`, ephemeral: true })
           } catch {
             return interaction.reply({ content: `${id} is not a valid user ID.`, ephemeral: true })
           }

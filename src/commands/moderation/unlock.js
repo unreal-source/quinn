@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 
 class UnlockChannel extends SlashCommand {
@@ -51,7 +52,7 @@ class UnlockChannel extends SlashCommand {
     const moderationLogEntry = new EmbedBuilder()
       .setAuthor({ name: '🔓 Channel unlocked' })
       .setDescription(`**Channel:** #${channel.name}\n**Reason:** ${reason ?? 'No reason given'}`)
-      .setFooter({ text: interaction.member.user.tag })
+      .setFooter({ text: getUsername(interaction.member) })
       .setTimestamp()
 
     await moderationLog.send({ embeds: [moderationLogEntry] })

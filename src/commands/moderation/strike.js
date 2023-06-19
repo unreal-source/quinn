@@ -2,6 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time } from 'discord.js'
 import ms from 'ms'
 import log from '../../utilities/logger.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
 
@@ -52,9 +53,9 @@ class Strike extends SlashCommand {
     const incident = await prisma.case.create({
       data: {
         action: 'Strike added',
-        member: member.user.tag,
+        member: getUsername(member),
         memberId: member.id,
-        moderator: interaction.member.user.tag,
+        moderator: getUsername(interaction.member),
         moderatorId: interaction.member.id,
         reason,
         strike: {
@@ -82,7 +83,7 @@ class Strike extends SlashCommand {
     // Strike 1 - Timeout for 10 mins
     if (activeStrikes === 1) {
       await member.timeout(ms(process.env.STRIKE_ONE_TIMEOUT_DURATION), reason)
-      await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
+      await interaction.reply({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
 
       const moderationLogEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
@@ -116,7 +117,7 @@ class Strike extends SlashCommand {
     // Strike 2 - Timeout for 1 hour
     if (activeStrikes === 2) {
       await member.timeout(ms(process.env.STRIKE_TWO_TIMEOUT_DURATION), reason)
-      await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
+      await interaction.reply({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
 
       const moderationLogEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 2 • Timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}` })
@@ -163,7 +164,7 @@ class Strike extends SlashCommand {
         }
 
         await member.ban({ days: 1, reason })
-        await interaction.reply({ content: `${member.user.tag} received strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
+        await interaction.reply({ content: `${getUsername(member)} received strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
 
         const moderationLogEmbed = new EmbedBuilder()
           .setAuthor({ name: '🚩 Strike 3 • Banned from the server' })

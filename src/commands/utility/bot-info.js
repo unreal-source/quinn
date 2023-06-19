@@ -1,6 +1,7 @@
 import { SlashCommand } from 'hiei.js'
 import { EmbedBuilder, PermissionFlagsBits, time } from 'discord.js'
 import { importJson } from '../../utilities/json-util.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import { resolve } from 'node:path'
 import log from '../../utilities/logger.js'
 

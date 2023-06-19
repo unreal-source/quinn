@@ -1,6 +1,6 @@
 import { MessageCommand } from 'hiei.js'
 import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, TextInputBuilder, TextInputStyle, channelMention, roleMention, userMention, time } from 'discord.js'
-import { createModalCollector } from '../../utilities/discord-util.js'
+import { createModalCollector, getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 
 class ReportToModerators extends MessageCommand {
@@ -36,7 +36,7 @@ class ReportToModerators extends MessageCommand {
         const reportChannel = interaction.guild.channels.cache.get(process.env.USER_REPORTS_CHANNEL)
         const reportEntry = new EmbedBuilder()
           .setAuthor({ name: '⚠️ Reported Message' })
-          .setDescription(`**Author:** ${message.author.tag}\n**Author ID:** ${message.author.id}\n**Content:** ${message.content}\n**Timestamp:** ${time(message.createdAt)} • ${time(message.createdAt, 'R')}\n[Jump to Message](${message.url})`)
+          .setDescription(`**Author:** ${getUsername(message.member)}\n**Author ID:** ${message.author.id}\n**Content:** ${message.content}\n**Timestamp:** ${time(message.createdAt)} • ${time(message.createdAt, 'R')}\n[Jump to Message](${message.url})`)
 
         await reportChannel.send({ content: `${roleMention(process.env.MODERATOR_ROLE)} → **${userMention(i.member.id)} reported a message in ${channelMention(message.channel.id)}.**\nReason: ${reason}\n`, embeds: [reportEntry] })
 

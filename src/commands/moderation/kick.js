@@ -1,5 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
+import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 import pkg from '@prisma/client'
 const { PrismaClient } = pkg
@@ -50,9 +51,9 @@ class Kick extends SlashCommand {
       const incident = await prisma.case.create({
         data: {
           action: 'Kicked',
-          member: member.user.tag,
+          member: getUsername(member),
           memberId: member.id,
-          moderator: interaction.member.user.tag,
+          moderator: getUsername(interaction.member),
           moderatorId: interaction.member.id,
           reason
         }
@@ -72,7 +73,7 @@ class Kick extends SlashCommand {
       }
 
       await member.kick(reason)
-      await interaction.reply({ content: `${member.user.tag} was kicked from the server.`, ephemeral: true })
+      await interaction.reply({ content: `${getUsername(member)} was kicked from the server.`, ephemeral: true })
 
       const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
       const moderationLogEmbed = new EmbedBuilder()
