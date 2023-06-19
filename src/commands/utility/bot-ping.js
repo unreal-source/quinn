@@ -27,7 +27,7 @@ class BotPing extends SlashCommand {
       8: 'Resuming'
     }
 
-    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name.name })
+    log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     return interaction.editReply({ content: `:ping_pong: Ping... Pong! Roundtrip latency is \`${latency}ms\`. Heartbeat is \`${heartbeat}ms\`. Status is \`${status[this.client.ws.status]}\`.` })
   }
