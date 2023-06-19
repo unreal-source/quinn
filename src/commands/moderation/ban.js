@@ -47,6 +47,8 @@ class Ban extends SlashCommand {
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
+    await interaction.deferReply()
+
     if (!member) {
       return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
     }
