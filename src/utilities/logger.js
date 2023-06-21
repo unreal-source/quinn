@@ -21,6 +21,6 @@ const localLog = {
   error: console.error
 }
 
-const log = transport.host ? pino(transport) : localLog
+const log = process.env.LOKI_HOST ? pino(transport) : localLog
 
 export default log
