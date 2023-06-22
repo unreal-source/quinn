@@ -32,11 +32,12 @@ class ReportToModerators extends MessageCommand {
 
     collector.on('collect', async i => {
       if (i.customId === 'reportModal') {
+        console.log(message)
         const reason = i.fields.getTextInputValue('reason')
         const reportChannel = interaction.guild.channels.cache.get(process.env.USER_REPORTS_CHANNEL)
         const reportEntry = new EmbedBuilder()
           .setAuthor({ name: '⚠️ Reported Message' })
-          .setDescription(`**Author:** ${getUsername(message.member)}\n**Author ID:** ${message.author.id}\n**Content:** ${message.content}\n**Timestamp:** ${time(message.createdAt)} • ${time(message.createdAt, 'R')}\n[Jump to Message](${message.url})`)
+          .setDescription(`**Author:** ${getUsername(message.member || message.author)}\n**Author ID:** ${message.author.id}\n**Content:** ${message.content}\n**Timestamp:** ${time(message.createdAt)} • ${time(message.createdAt, 'R')}\n[Jump to Message](${message.url})`)
 
         await reportChannel.send({ content: `${roleMention(process.env.MODERATOR_ROLE)} → **${userMention(i.member.id)} reported a message in ${channelMention(message.channel.id)}.**\nReason: ${reason}\n`, embeds: [reportEntry] })
 
