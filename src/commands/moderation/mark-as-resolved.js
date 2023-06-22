@@ -22,7 +22,7 @@ class MarkAsResolved extends MessageCommand {
 
     const now = new Date()
 
-    await message.edit(`~~${content}~~\n:white_check_mark: _Resolved by ${interaction.user.tag} ${time(now)}_`)
+    await message.edit(`~~${content}~~\n:white_check_mark: _Resolved by ${getUsername(interaction.user)} ${time(now)}_`)
     return interaction.reply({ content: 'Successfully marked as resolved.', ephemeral: true })
   }
 }
