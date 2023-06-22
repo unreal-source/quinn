@@ -48,8 +48,6 @@ class Ban extends SlashCommand {
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
-    await interaction.deferReply()
-
     if (!member) {
       return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
     }
@@ -103,13 +101,15 @@ class Ban extends SlashCommand {
         canNotify = false
       }
 
+      await interaction.deferReply({ ephemeral: true })
+
       if (canNotify) {
-        await interaction.reply({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
+        await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
         await member.ban({ deleteMessageDays: messages, reason })
         await interaction.followUp({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
       } else {
         await member.ban({ deleteMessageDays: messages, reason })
-        await interaction.reply({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
+        await interaction.followUp({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
       }
 
       const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
@@ -129,7 +129,7 @@ class Ban extends SlashCommand {
 
       prisma.$disconnect()
     } else {
-      return interaction.reply({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
+      return interaction.followUp({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
     }
   }
 }
