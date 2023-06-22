@@ -104,12 +104,12 @@ class Ban extends SlashCommand {
       await interaction.deferReply({ ephemeral: true })
 
       if (canNotify) {
-        await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
         await member.ban({ deleteMessageDays: messages, reason })
         await interaction.followUp({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
       } else {
         await member.ban({ deleteMessageDays: messages, reason })
         await interaction.followUp({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
+        await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
       }
 
       const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
