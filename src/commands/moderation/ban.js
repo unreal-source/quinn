@@ -60,6 +60,8 @@ class Ban extends SlashCommand {
       return interaction.reply({ content: 'You can\'t ban yourself.', ephemeral: true })
     }
 
+    await interaction.deferReply({ ephemeral: true })
+
     if (member.bannable) {
       const incident = await prisma.case.create({
         data: {
@@ -100,8 +102,6 @@ class Ban extends SlashCommand {
       } catch (e) {
         canNotify = false
       }
-
-      await interaction.deferReply({ ephemeral: true })
 
       if (canNotify) {
         await member.ban({ deleteMessageDays: messages, reason })
