@@ -3,22 +3,22 @@ import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, Text
 import { createModalCollector, getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 
-class ReportToModerators extends MessageCommand {
+class ReportMessage extends MessageCommand {
   constructor () {
     super({
-      name: 'Report to Moderators',
+      name: 'Report Message',
       defaultMemberPermissions: PermissionFlagsBits.SendMessages
     })
   }
 
   async run (interaction, message) {
     const reportModal = new ModalBuilder()
-      .setCustomId('reportModal')
-      .setTitle('Report to Moderators')
+      .setCustomId('reportMessageModal')
+      .setTitle('Report Message')
 
     const reasonInput = new TextInputBuilder()
       .setCustomId('reason')
-      .setLabel('Reason for reporting this content')
+      .setLabel('Reason for reporting this message')
       .setStyle(TextInputStyle.Paragraph)
 
     const firstRow = new ActionRowBuilder().addComponents(reasonInput)
@@ -31,7 +31,7 @@ class ReportToModerators extends MessageCommand {
     const collector = createModalCollector(this.client, interaction)
 
     collector.on('collect', async i => {
-      if (i.customId === 'reportModal') {
+      if (i.customId === 'reportMessageModal') {
         console.log(message)
         const reason = i.fields.getTextInputValue('reason')
         const reportChannel = interaction.guild.channels.cache.get(process.env.USER_REPORTS_CHANNEL)
@@ -49,4 +49,4 @@ class ReportToModerators extends MessageCommand {
   }
 }
 
-export default ReportToModerators
+export default ReportMessage
