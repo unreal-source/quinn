@@ -2,8 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
-import pkg from '@prisma/client'
-const { PrismaClient } = pkg
+import prisma from '../utilities/prisma-client.js'
 
 class Ban extends SlashCommand {
   constructor () {
@@ -44,7 +43,6 @@ class Ban extends SlashCommand {
     const messages = interaction.options.getInteger('messages')
     const reason = interaction.options.getString('reason')
     let canNotify = true
-    const prisma = new PrismaClient()
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
@@ -126,8 +124,6 @@ class Ban extends SlashCommand {
         where: { id: incident.id },
         data: { reference: moderationLogEntry.url }
       })
-
-      prisma.$disconnect()
     } else {
       return interaction.followUp({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
     }

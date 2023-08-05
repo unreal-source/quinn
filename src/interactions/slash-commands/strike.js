@@ -3,8 +3,7 @@ import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time }
 import ms from 'ms'
 import log from '../../utilities/logger.js'
 import { getUsername } from '../../utilities/discord-util.js'
-import pkg from '@prisma/client'
-const { PrismaClient } = pkg
+import prisma from '../utilities/prisma-client.js'
 
 class Strike extends SlashCommand {
   constructor () {
@@ -35,7 +34,6 @@ class Strike extends SlashCommand {
     const now = new Date()
     const strikeGuardCooldown = new Date(now + ms(process.env.STRIKE_GUARD_COOLDOWN))
     const expiration = new Date(now.setMilliseconds(now.getMilliseconds() + ms(process.env.STRIKE_DURATION)))
-    const prisma = new PrismaClient()
 
     const recentStrike = await prisma.case.findFirst({
       where: {
@@ -134,8 +132,6 @@ class Strike extends SlashCommand {
       } catch (e) {
         await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
       }
-
-      await prisma.$disconnect()
     }
 
     // Strike 2 - Timeout for 1 hour
@@ -168,8 +164,6 @@ class Strike extends SlashCommand {
       } catch (e) {
         await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
       }
-
-      await prisma.$disconnect()
     }
 
     // Strike 3 - Banned
@@ -219,8 +213,6 @@ class Strike extends SlashCommand {
             data: { isActive: false }
           })
         }))
-
-        await prisma.$disconnect()
       } else {
         return interaction.reply({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
       }

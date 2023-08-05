@@ -3,8 +3,7 @@ import { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBui
 import ms from 'ms'
 import log from '../../utilities/logger.js'
 import { getUsername } from '../../utilities/discord-util.js'
-import pkg from '@prisma/client'
-const { PrismaClient } = pkg
+import prisma from '../utilities/prisma-client.js'
 
 class MegaBan extends SlashCommand {
   constructor () {
@@ -64,7 +63,6 @@ class MegaBan extends SlashCommand {
       const created = interaction.options.getString('created')
       const messages = interaction.options.getInteger('messages')
       const reason = interaction.options.getString('reason')
-      const prisma = new PrismaClient()
       const joinedCutoff = new Date(Date.now() - ms(joined))
       const createdCutoff = new Date(Date.now() - ms(created))
 
@@ -114,8 +112,6 @@ class MegaBan extends SlashCommand {
                 }))
 
                 successfulBans.push(member)
-
-                prisma.$disconnect()
               } else {
                 failedBans.push(member)
               }

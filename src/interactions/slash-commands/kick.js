@@ -2,8 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
-import pkg from '@prisma/client'
-const { PrismaClient } = pkg
+import prisma from '../utilities/prisma-client.js'
 
 class Kick extends SlashCommand {
   constructor () {
@@ -31,7 +30,6 @@ class Kick extends SlashCommand {
   async run (interaction) {
     const member = interaction.options.getMember('user')
     const reason = interaction.options.getString('reason')
-    const prisma = new PrismaClient()
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
@@ -89,8 +87,6 @@ class Kick extends SlashCommand {
         where: { id: incident.id },
         data: { reference: moderationLogEntry.url }
       })
-
-      prisma.$disconnect()
     } else {
       return interaction.reply({ content: 'I don\'t have permission to kick that member.', ephemeral: true })
     }

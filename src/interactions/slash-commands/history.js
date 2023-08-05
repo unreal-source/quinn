@@ -3,8 +3,7 @@ import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time }
 import { sortByKey } from '../../utilities/array-util.js'
 import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
-import pkg from '@prisma/client'
-const { PrismaClient } = pkg
+import prisma from '../utilities/prisma-client.js'
 
 class History extends SlashCommand {
   constructor () {
@@ -25,7 +24,6 @@ class History extends SlashCommand {
 
   async run (interaction) {
     const member = interaction.options.getMember('user')
-    const prisma = new PrismaClient()
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 

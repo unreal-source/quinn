@@ -2,8 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
-import pkg from '@prisma/client'
-const { PrismaClient } = pkg
+import prisma from '../utilities/prisma-client.js'
 
 class Undo extends SlashCommand {
   constructor () {
@@ -75,7 +74,6 @@ class Undo extends SlashCommand {
 
   async run (interaction) {
     const subcommand = interaction.options.getSubcommand()
-    const prisma = new PrismaClient()
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
@@ -126,8 +124,6 @@ class Undo extends SlashCommand {
             data: { reference: moderationLogEntry.url }
           })
 
-          await prisma.$disconnect()
-
           const notification = new EmbedBuilder()
             .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
             .setTitle('Timeout cancelled')
@@ -148,7 +144,6 @@ class Undo extends SlashCommand {
       case 'strike': {
         const caseNumber = interaction.options.getInteger('case')
         const reason = interaction.options.getString('reason')
-        const prisma = new PrismaClient()
         const record = await prisma.case.findUnique({
           where: { id: caseNumber },
           include: { strike: true }
@@ -213,8 +208,6 @@ class Undo extends SlashCommand {
           data: { reference: moderationLogEntry.url }
         })
 
-        await prisma.$disconnect()
-
         const notification = new EmbedBuilder()
           .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
           .setTitle('One of your strikes was removed')
@@ -272,8 +265,6 @@ class Undo extends SlashCommand {
             where: { id: incident.id },
             data: { reference: moderationLogEntry.url }
           })
-
-          prisma.$disconnect()
         } catch {
           try {
             const member = await interaction.guild.members.fetch(id)

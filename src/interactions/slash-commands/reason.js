@@ -2,8 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 import { getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
-import pkg from '@prisma/client'
-const { PrismaClient } = pkg
+import prisma from '../utilities/prisma-client.js'
 
 class Reason extends SlashCommand {
   constructor () {
@@ -31,7 +30,6 @@ class Reason extends SlashCommand {
   async run (interaction) {
     const caseNumber = interaction.options.getInteger('case')
     const newReason = interaction.options.getString('reason')
-    const prisma = new PrismaClient()
     const originalCase = await prisma.case.findUnique({
       where: { id: caseNumber }
     })
@@ -48,8 +46,6 @@ class Reason extends SlashCommand {
         reason: newReason
       }
     })
-
-    await prisma.$disconnect()
 
     const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
     const moderationLogEntry = new EmbedBuilder()

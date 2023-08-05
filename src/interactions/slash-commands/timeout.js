@@ -3,8 +3,7 @@ import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits, time }
 import ms from 'ms'
 import log from '../../utilities/logger.js'
 import { getUsername } from '../../utilities/discord-util.js'
-import pkg from '@prisma/client'
-const { PrismaClient } = pkg
+import prisma from '../utilities/prisma-client.js'
 
 class Timeout extends SlashCommand {
   constructor () {
@@ -47,7 +46,6 @@ class Timeout extends SlashCommand {
     const member = interaction.options.getMember('user')
     const duration = interaction.options.getString('duration')
     const reason = interaction.options.getString('reason')
-    const prisma = new PrismaClient()
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
@@ -98,8 +96,6 @@ class Timeout extends SlashCommand {
       where: { id: incident.id },
       data: { reference: moderationLogEntry.url }
     })
-
-    await prisma.$disconnect()
 
     const notification = new EmbedBuilder()
       .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
