@@ -33,8 +33,32 @@ class Strike extends SlashCommand {
     const member = interaction.options.getMember('user')
     const reason = interaction.options.getString('reason')
     const now = new Date()
+    const strikeGuardCooldown = new Date(now + ms(process.env.STRIKE_GUARD_COOLDOWN))
     const expiration = new Date(now.setMilliseconds(now.getMilliseconds() + ms(process.env.STRIKE_DURATION)))
     const prisma = new PrismaClient()
+
+    const recentStrike = await prisma.case.findFirst({
+      where: {
+        memberId: member.id,
+        strike: {
+          is: { isActive: true }
+        },
+        createdAt: {
+          lte: strikeGuardCooldown
+        }
+      },
+      include: { strike: true }
+    })
+
+    if (recentStrike) {
+      const recentStrikeEmbed = new EmbedBuilder()
+        .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
+        .setDescription(`**Member:** ${recentStrike.member}\n**Member ID:** ${recentStrike.memberId}\n**Reason:** ${recentStrike.reason}\n**Expiration:** ${time(recentStrike.strike.expiration, 'R')}`)
+        .setFooter({ text: `Case ${recentStrike.id} • ${recentStrike.moderator}` })
+        .setThumbnail(member.displayAvatarURL())
+        .setTimestamp()
+      return interaction.reply({ content: `${member.user.username} just received a strike ${time(recentStrike.createdAt, 'R')}.`, embeds: [recentStrikeEmbed], ephemeral: true })
+    }
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
