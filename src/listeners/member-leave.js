@@ -1,4 +1,5 @@
 import { Listener } from 'hiei.js'
+import { time } from 'discord.js'
 
 class MemberLeave extends Listener {
   constructor () {
@@ -11,7 +12,7 @@ class MemberLeave extends Listener {
 
   async run (member) {
     const memberLog = await this.client.channels.fetch(process.env.MEMBER_LOG_CHANNEL)
-    return memberLog.send({ content: `:red_circle: <@${member.user.id}> left the server` })
+    return memberLog.send({ content: `:red_circle: **${member.user.username} left the server** • Joined the server ${time(member.joinedAt, 'R')}` })
   }
 }
 

@@ -16,14 +16,14 @@ class MemberJoin extends Listener {
     const newAccountThreshold = new Date(Date.now() - ms(process.env.NEW_ACCOUNT_THRESHOLD))
 
     if (member.user.bot) {
-      return memberLog.send({ content: `:robot: <@${member.user.id}> was added to the server • \`BOT\`` })
+      return memberLog.send({ content: `:robot: <@${member.user.id}> was added to the server • Account created ${time(member.user.createdAt, 'R')}` })
     }
 
     if (member.createdAt > newAccountThreshold) {
-      return memberLog.send({ content: `:new: <@${member.user.id}> joined the server • Account created ${time(member.user.createdAt, 'R')}` })
+      return memberLog.send({ content: `:new: <@${member.user.id}> **joined the server** • Account created ${time(member.user.createdAt, 'R')}` })
     }
 
-    return memberLog.send({ content: `:green_circle: <@${member.user.id}> joined the server` })
+    return memberLog.send({ content: `:green_circle: <@${member.user.id}> **joined the server** • Account created ${time(member.user.createdAt, 'R')}` })
   }
 }
 
