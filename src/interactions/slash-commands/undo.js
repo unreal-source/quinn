@@ -77,26 +77,28 @@ class Undo extends SlashCommand {
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
+    await interaction.deferReply({ ephemeral: true })
+
     switch (subcommand) {
       case 'timeout': {
         const member = interaction.options.getMember('user')
         const reason = interaction.options.getString('reason')
 
         if (!member) {
-          return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
+          return interaction.followUp({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
         }
 
         if (member.id === this.client.user.id) {
-          return interaction.reply({ content: 'Nice try, human.', ephemeral: true })
+          return interaction.followUp({ content: 'Nice try, human.', ephemeral: true })
         }
 
         if (member.id === interaction.member.id) {
-          return interaction.reply({ content: 'You can\'t cancel your own timeout.', ephemeral: true })
+          return interaction.followUp({ content: 'You can\'t cancel your own timeout.', ephemeral: true })
         }
 
         if (member.isCommunicationDisabled()) {
           await member.timeout(null, reason)
-          await interaction.reply({ content: `${getUsername(member)} is no longer timed out.`, ephemeral: true })
+          await interaction.followUp({ content: `${getUsername(member)} is no longer timed out.`, ephemeral: true })
 
           const incident = await prisma.case.create({
             data: {
@@ -136,7 +138,7 @@ class Undo extends SlashCommand {
             await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
           }
         } else {
-          return interaction.reply({ content: `${getUsername(member)} isn not timed out.`, ephemeral: true })
+          return interaction.followUp({ content: `${getUsername(member)} isn not timed out.`, ephemeral: true })
         }
         break
       }
@@ -150,19 +152,19 @@ class Undo extends SlashCommand {
         })
 
         if (!record) {
-          return interaction.reply({ content: 'Case not found.', ephemeral: true })
+          return interaction.followUp({ content: 'Case not found.', ephemeral: true })
         }
 
         if (!record.strike) {
-          return interaction.reply({ content: `Case ${record.id} is not a strike.`, ephemeral: true })
+          return interaction.followUp({ content: `Case ${record.id} is not a strike.`, ephemeral: true })
         }
 
         if (!record.strike.isActive) {
-          return interaction.reply({ content: 'Strike already removed.', ephemeral: true })
+          return interaction.followUp({ content: 'Strike already removed.', ephemeral: true })
         }
 
         if (record.memberId === interaction.member.id) {
-          return interaction.reply({ content: 'You can\'t remove your own strike.', ephemeral: true })
+          return interaction.followUp({ content: 'You can\'t remove your own strike.', ephemeral: true })
         }
 
         await prisma.strike.update({
@@ -179,7 +181,7 @@ class Undo extends SlashCommand {
           }
         })
 
-        await interaction.reply({ content: `${record.member} lost a strike. They have ${strikesRemaining} strikes remaining.`, ephemeral: true })
+        await interaction.followUp({ content: `${record.member} lost a strike. They have ${strikesRemaining} strikes remaining.`, ephemeral: true })
 
         const incident = await prisma.case.create({
           data: {
@@ -227,18 +229,18 @@ class Undo extends SlashCommand {
         const reason = interaction.options.getString('reason')
 
         if (id === this.client.user.id) {
-          return interaction.reply({ content: 'Nice try, human.', ephemeral: true })
+          return interaction.followUp({ content: 'Nice try, human.', ephemeral: true })
         }
 
         if (id === interaction.member.id) {
-          return interaction.reply({ content: 'You can\'t revoke your own ban.', ephemeral: true })
+          return interaction.followUp({ content: 'You can\'t revoke your own ban.', ephemeral: true })
         }
 
         try {
           const ban = await interaction.guild.bans.fetch(id)
 
           await interaction.guild.members.unban(id)
-          await interaction.reply({ content: `${ban.user.tag} is no longer banned. Please remember to notify them.`, ephemeral: true })
+          await interaction.followUp({ content: `${ban.user.tag} is no longer banned. Please remember to notify them.`, ephemeral: true })
 
           const incident = await prisma.case.create({
             data: {
@@ -268,9 +270,9 @@ class Undo extends SlashCommand {
         } catch {
           try {
             const member = await interaction.guild.members.fetch(id)
-            return interaction.reply({ content: `${getUsername(member)} is not banned.`, ephemeral: true })
+            return interaction.followUp({ content: `${getUsername(member)} is not banned.`, ephemeral: true })
           } catch {
-            return interaction.reply({ content: `${id} is not a valid user ID.`, ephemeral: true })
+            return interaction.followUp({ content: `${id} is not a valid user ID.`, ephemeral: true })
           }
         }
         break

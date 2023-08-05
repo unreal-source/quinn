@@ -45,6 +45,8 @@ class Kick extends SlashCommand {
       return interaction.reply({ content: 'You can\'t kick yourself.', ephemeral: true })
     }
 
+    await interaction.deferReply({ ephemeral: true })
+
     if (member.kickable) {
       const incident = await prisma.case.create({
         data: {
@@ -71,7 +73,7 @@ class Kick extends SlashCommand {
       }
 
       await member.kick(reason)
-      await interaction.reply({ content: `${getUsername(member)} was kicked from the server.`, ephemeral: true })
+      await interaction.followUp({ content: `${getUsername(member)} was kicked from the server.`, ephemeral: true })
 
       const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
       const moderationLogEmbed = new EmbedBuilder()
@@ -88,7 +90,7 @@ class Kick extends SlashCommand {
         data: { reference: moderationLogEntry.url }
       })
     } else {
-      return interaction.reply({ content: 'I don\'t have permission to kick that member.', ephemeral: true })
+      return interaction.followUp({ content: 'I don\'t have permission to kick that member.', ephemeral: true })
     }
   }
 }

@@ -31,6 +31,8 @@ class History extends SlashCommand {
       return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
     }
 
+    await interaction.deferReply({ ephemeral: true })
+
     const records = await prisma.case.findMany({
       where: { memberId: member.id },
       include: { strike: true }
@@ -58,10 +60,10 @@ class History extends SlashCommand {
         .setDescription(`${timeoutsSummary} • ${strikesSummary} • ${kicksSummary} • ${bansSummary}\n—\n${history}`)
         .setThumbnail(member.displayAvatarURL())
 
-      return interaction.reply({ embeds: [historyEmbed], ephemeral: true })
+      return interaction.followUp({ embeds: [historyEmbed], ephemeral: true })
     }
 
-    return interaction.reply({ content: `${getUsername(member)} has no history.`, ephemeral: true })
+    return interaction.followUp({ content: `${getUsername(member)} has no history.`, ephemeral: true })
   }
 }
 

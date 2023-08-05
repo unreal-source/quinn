@@ -38,12 +38,14 @@ class Purge extends SlashCommand {
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
+    await interaction.deferReply({ ephemeral: true })
+
     if (author) {
       const messages = await interaction.channel.messages.fetch()
       const messagesByAuthor = await messages.filter(m => m.author.id === author.id).first(quantity)
 
       await interaction.channel.bulkDelete(messagesByAuthor)
-      await interaction.reply({ content: `Deleted ${quantity} messages by ${author.user.tag}`, ephemeral: true })
+      await interaction.followUp({ content: `Deleted ${quantity} messages by ${author.user.tag}`, ephemeral: true })
 
       const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
       const moderationLogEntry = new EmbedBuilder()
@@ -56,7 +58,7 @@ class Purge extends SlashCommand {
     }
 
     await interaction.channel.bulkDelete(quantity)
-    await interaction.reply({ content: `Deleted ${quantity} messages`, ephemeral: true })
+    await interaction.followUp({ content: `Deleted ${quantity} messages`, ephemeral: true })
 
     const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
     const moderationLogEntry = new EmbedBuilder()

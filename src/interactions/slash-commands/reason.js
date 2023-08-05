@@ -30,6 +30,9 @@ class Reason extends SlashCommand {
   async run (interaction) {
     const caseNumber = interaction.options.getInteger('case')
     const newReason = interaction.options.getString('reason')
+
+    await interaction.deferReply({ ephemeral: true })
+
     const originalCase = await prisma.case.findUnique({
       where: { id: caseNumber }
     })
@@ -37,7 +40,7 @@ class Reason extends SlashCommand {
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     if (!originalCase) {
-      return interaction.reply({ content: 'Case not found.', ephemeral: true })
+      return interaction.followUp({ content: 'Case not found.', ephemeral: true })
     }
 
     const updatedCase = await prisma.case.update({
@@ -56,7 +59,7 @@ class Reason extends SlashCommand {
 
     moderationLog.send({ embeds: [moderationLogEntry] })
 
-    return interaction.reply({ content: `Updated reason for case ${caseNumber}`, ephemeral: true })
+    return interaction.followUp({ content: `Updated reason for case ${caseNumber}`, ephemeral: true })
   }
 }
 

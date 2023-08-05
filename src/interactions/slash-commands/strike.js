@@ -35,6 +35,8 @@ class Strike extends SlashCommand {
     const strikeGuardCooldown = new Date(now + ms(process.env.STRIKE_GUARD_COOLDOWN))
     const expiration = new Date(now.setMilliseconds(now.getMilliseconds() + ms(process.env.STRIKE_DURATION)))
 
+    await interaction.deferReply({ ephemeral: true })
+
     const recentStrike = await prisma.case.findFirst({
       where: {
         memberId: member.id,
@@ -55,21 +57,21 @@ class Strike extends SlashCommand {
         .setFooter({ text: `Case ${recentStrike.id} • ${recentStrike.moderator}` })
         .setThumbnail(member.displayAvatarURL())
         .setTimestamp()
-      return interaction.reply({ content: `${member.user.username} just received a strike ${time(recentStrike.createdAt, 'R')}.`, embeds: [recentStrikeEmbed], ephemeral: true })
+      return interaction.followUp({ content: `${member.user.username} just received a strike ${time(recentStrike.createdAt, 'R')}.`, embeds: [recentStrikeEmbed], ephemeral: true })
     }
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
     if (!member) {
-      return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
+      return interaction.followUp({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
     }
 
     if (member.id === this.client.user.id) {
-      return interaction.reply({ content: 'Nice try, human.', ephemeral: true })
+      return interaction.followUp({ content: 'Nice try, human.', ephemeral: true })
     }
 
     if (member.id === interaction.member.id) {
-      return interaction.reply({ content: 'You can\'t give yourself a strike.', ephemeral: true })
+      return interaction.followUp({ content: 'You can\'t give yourself a strike.', ephemeral: true })
     }
 
     const incident = await prisma.case.create({
@@ -105,7 +107,7 @@ class Strike extends SlashCommand {
     // Strike 1 - Timeout for 10 mins
     if (activeStrikes === 1) {
       await member.timeout(ms(process.env.STRIKE_ONE_TIMEOUT_DURATION), reason)
-      await interaction.reply({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
+      await interaction.followUp({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
 
       const moderationLogEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
@@ -137,7 +139,7 @@ class Strike extends SlashCommand {
     // Strike 2 - Timeout for 1 hour
     if (activeStrikes === 2) {
       await member.timeout(ms(process.env.STRIKE_TWO_TIMEOUT_DURATION), reason)
-      await interaction.reply({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
+      await interaction.followUp({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
 
       const moderationLogEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 2 • Timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}` })
@@ -182,7 +184,7 @@ class Strike extends SlashCommand {
         }
 
         await member.ban({ days: 1, reason })
-        await interaction.reply({ content: `${getUsername(member)} received strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
+        await interaction.followUp({ content: `${getUsername(member)} received strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
 
         const moderationLogEmbed = new EmbedBuilder()
           .setAuthor({ name: '🚩 Strike 3 • Banned from the server' })
@@ -214,7 +216,7 @@ class Strike extends SlashCommand {
           })
         }))
       } else {
-        return interaction.reply({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
+        return interaction.followUp({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
       }
     }
   }

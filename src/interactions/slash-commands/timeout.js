@@ -49,6 +49,8 @@ class Timeout extends SlashCommand {
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
 
+    await interaction.deferReply({ ephemeral: true })
+
     if (!member) {
       return interaction.reply({ content: 'That user is not in the server. If they still appear as an option, try refreshing your client.', ephemeral: true })
     }
@@ -66,7 +68,7 @@ class Timeout extends SlashCommand {
     }
 
     await member.timeout(ms(duration), reason)
-    await interaction.reply({ content: `${getUsername(member)} was timed out for ${duration}.`, ephemeral: true })
+    await interaction.followUp({ content: `${getUsername(member)} was timed out for ${duration}.`, ephemeral: true })
 
     const incident = await prisma.case.create({
       data: {

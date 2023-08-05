@@ -66,6 +66,8 @@ class MegaBan extends SlashCommand {
       const joinedCutoff = new Date(Date.now() - ms(joined))
       const createdCutoff = new Date(Date.now() - ms(created))
 
+      await interaction.deferReply({ ephemeral: true })
+
       const members = await interaction.guild.members.fetch({ force: true })
       const matches = members.filter(member => member.joinedTimestamp > joinedCutoff && member.user.createdTimestamp > createdCutoff)
       const matchMentions = matches.map(member => `<@${member.id}>`).join(' ')
@@ -84,7 +86,7 @@ class MegaBan extends SlashCommand {
           .setStyle(ButtonStyle.Secondary)
 
         const buttons = new ActionRowBuilder().addComponents([cancelButton, banButton])
-        const prompt = await interaction.reply({ content: `Found ${matches.size} ${matches.size > 1 ? 'members' : 'member'} who joined after ${time(joinedCutoff)} with accounts created after ${time(createdCutoff)}:\n${matchMentions}`, components: [buttons], ephemeral: true })
+        const prompt = await interaction.followUp({ content: `Found ${matches.size} ${matches.size > 1 ? 'members' : 'member'} who joined after ${time(joinedCutoff)} with accounts created after ${time(createdCutoff)}:\n${matchMentions}`, components: [buttons], ephemeral: true })
         const collector = prompt.createMessageComponentCollector({ componentType: ComponentType.Button, time: ms('1 minute') })
 
         collector.on('collect', async i => {
@@ -141,7 +143,7 @@ class MegaBan extends SlashCommand {
           }
         })
       } else {
-        return interaction.reply({ content: 'No matches found. You may need to adjust the parameters and try again.', ephemeral: true })
+        return interaction.followUp({ content: 'No matches found. You may need to adjust the parameters and try again.', ephemeral: true })
       }
     } catch (e) {
       console.error(e)
