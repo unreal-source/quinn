@@ -67,6 +67,7 @@ class ClientReady extends Listener {
             try {
               await member.send({ embeds: [notification] })
             } catch (e) {
+              console.error(e)
               log.error({ event: 'notification-failed', member: member.user.username }, `Failed to notify ${member.user.username} of an expired strike`)
             }
           }

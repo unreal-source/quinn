@@ -41,7 +41,7 @@ class ReportMessage extends MessageCommand {
 
         await reportChannel.send({ content: `${roleMention(process.env.MODERATOR_ROLE)} → **${userMention(i.member.id)} reported a message in ${channelMention(message.channel.id)}.**\nReason: ${reason}\n`, embeds: [reportEntry] })
 
-        log.info({ event: 'user-report', channel: interaction.channel.name })
+        log.info({ event: 'message-reported', channel: interaction.channel.name })
 
         return i.reply({ content: 'Thank you for submitting your report. A moderator will review it as soon as possible. ', ephemeral: true })
       }

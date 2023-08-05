@@ -23,6 +23,9 @@ class MarkAsResolved extends MessageCommand {
     const now = new Date()
 
     await message.edit(`~~${content}~~\n:white_check_mark: _Resolved by ${getUsername(interaction.user)} ${time(now)}_`)
+
+    log.info({ event: 'report-resolved', moderator: getUsername(interaction.user) })
+
     return interaction.reply({ content: 'Successfully marked as resolved.', ephemeral: true })
   }
 }
