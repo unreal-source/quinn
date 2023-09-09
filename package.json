@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "node -r dotenv/config src/quinn.js",
+    "proxy": "ngrok http --domain=factual-great-tapir.ngrok-free.app 9999",
     "lint": "standard | snazzy",
     "start": "node src/quinn.js"
   },
@@ -27,6 +28,7 @@
     "pino-loki": "^2.1.3"
   },
   "devDependencies": {
+    "ngrok": "^5.0.0-beta.2",
     "prisma": "^5.1.1",
     "snazzy": "^9.0.0",
     "standard": "^17.1.0"
