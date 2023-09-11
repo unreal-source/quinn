@@ -3,7 +3,7 @@ import { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBui
 import ms from 'ms'
 import log from '../../utilities/logger.js'
 import { getUsername } from '../../utilities/discord-util.js'
-import prisma from '../utilities/prisma-client.js'
+import prisma from '../../utilities/prisma-client.js'
 
 class MegaBan extends SlashCommand {
   constructor () {

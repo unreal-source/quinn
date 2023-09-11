@@ -1,5 +1,13 @@
 import pino from 'pino'
-const transport = pino.transport({
+const localTransport = pino.transport({
+  target: 'pino-pretty',
+  options: {
+    translateTime: 'HH:MM:ss Z',
+    ignore: 'pid,hostname'
+  }
+})
+
+const axiomTransport = pino.transport({
   target: '@axiomhq/pino',
   options: {
     dataset: process.env.AXIOM_DATASET,
@@ -7,12 +15,6 @@ const transport = pino.transport({
   }
 })
 
-const localLog = {
-  info: console.log,
-  warn: console.warn,
-  error: console.error
-}
-
-const log = process.env.AXIOM_TOKEN ? pino(transport) : localLog
+const log = process.env.AXIOM_TOKEN ? pino(axiomTransport) : pino(localTransport)
 
 export default log
