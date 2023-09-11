@@ -1,5 +1,3 @@
-import { roleMention } from 'discord.js'
-
 export default function (client) {
   return {
     method: 'POST',
@@ -38,12 +36,12 @@ export default function (client) {
         // Post a notification in #moderator-chat
         const data = request.body
         const fields = data.data.fields
-        const appealChannel = await client.channels.fetch(process.env.BAN_APPEALS_CHANNEL)
-        const moderatorChatChannel = await client.channels.fetch(process.env.MODERATOR_CHAT_CHANNEL)
         const username = fields[0].value
         const banReason = fields[1].value
         const notificationNotReceived = fields[3].value
         const appeal = fields[4].value
+        const appealChannel = await client.channels.fetch(process.env.BAN_APPEALS_CHANNEL)
+        const moderatorChatChannel = await client.channels.fetch(process.env.MODERATOR_CHAT_CHANNEL)
 
         const post = await appealChannel.threads.create({
           name: `New appeal from ${username}`,
