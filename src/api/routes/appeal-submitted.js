@@ -31,9 +31,6 @@ export default function (client) {
     },
     handler: async (request, reply) => {
       try {
-        // Get appeal data
-        // Create a new post in #ban-appeals
-        // Post a notification in #moderator-chat
         const data = request.body
         const fields = data.data.fields
         const username = fields[0].value
