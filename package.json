@@ -20,7 +20,7 @@
     "@fastify/rate-limit": "^8.0.3",
     "@prisma/client": "^5.1.1",
     "@sentry/node": "^7.61.0",
-    "croner": "^6.0.7",
+    "croner": "^7.0.4",
     "discord.js": "^14.12.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.22.2",
