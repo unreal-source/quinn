@@ -32,7 +32,6 @@ class ReportMessage extends MessageCommand {
 
     collector.on('collect', async i => {
       if (i.customId === 'reportMessageModal') {
-        console.log(message)
         const reason = i.fields.getTextInputValue('reason')
         const reportChannel = interaction.guild.channels.cache.get(process.env.USER_REPORTS_CHANNEL)
         const reportEntry = new EmbedBuilder()
