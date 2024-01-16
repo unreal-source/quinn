@@ -31,9 +31,8 @@ class Strike extends SlashCommand {
   async run (interaction) {
     const member = interaction.options.getMember('user')
     const reason = interaction.options.getString('reason')
-    const now = new Date()
-    const strikeGuardCooldown = new Date(now + ms(process.env.STRIKE_GUARD_COOLDOWN))
-    const expiration = new Date(now.setMilliseconds(now.getMilliseconds() + ms(process.env.STRIKE_DURATION)))
+    const strikeGuardCooldown = new Date(Date.now() + ms(process.env.STRIKE_GUARD_COOLDOWN))
+    const expiration = new Date(Date.now() + ms(process.env.STRIKE_DURATION))
 
     await interaction.deferReply({ ephemeral: true })
 
@@ -51,13 +50,16 @@ class Strike extends SlashCommand {
     })
 
     if (recentStrike) {
+      // Uncomment the line below when you are debugging double strike protection
+      // log.info({ strike: recentStrike.createdAt, now: new Date(), expiration, retry: strikeGuardCooldown })
+
       const recentStrikeEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
         .setDescription(`**Member:** ${recentStrike.member}\n**Member ID:** ${recentStrike.memberId}\n**Reason:** ${recentStrike.reason}\n**Expiration:** ${time(recentStrike.strike.expiration, 'R')}`)
         .setFooter({ text: `Case ${recentStrike.id} • ${recentStrike.moderator}` })
         .setThumbnail(member.displayAvatarURL())
         .setTimestamp()
-      return interaction.followUp({ content: `${member.user.username} just received a strike ${time(recentStrike.createdAt, 'R')}.`, embeds: [recentStrikeEmbed], ephemeral: true })
+      return interaction.followUp({ content: `${member.user.username} just received a strike ${time(recentStrike.createdAt, 'R')}. Try again ${time(strikeGuardCooldown, 'R')}`, embeds: [recentStrikeEmbed], ephemeral: true })
     }
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
