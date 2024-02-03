@@ -51,7 +51,7 @@ class Strike extends SlashCommand {
 
     if (recentStrike) {
       // Uncomment the line below when you are debugging double strike protection
-      // log.info({ strike: recentStrike.createdAt, now: new Date(), expiration, retry: strikeGuardCooldown })
+      log.info({ strike: recentStrike.createdAt, now: new Date(), expiration, retry: strikeGuardCooldown })
 
       const recentStrikeEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
