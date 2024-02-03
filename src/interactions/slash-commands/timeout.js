@@ -99,6 +99,8 @@ class Timeout extends SlashCommand {
       data: { reference: moderationLogEntry.url }
     })
 
+    prisma.$disconnect()
+
     const notification = new EmbedBuilder()
       .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
       .setTitle(`Timed out for ${duration}`)

@@ -126,6 +126,8 @@ class Undo extends SlashCommand {
             data: { reference: moderationLogEntry.url }
           })
 
+          prisma.$disconnect()
+
           const notification = new EmbedBuilder()
             .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
             .setTitle('Timeout cancelled')
@@ -210,6 +212,8 @@ class Undo extends SlashCommand {
           data: { reference: moderationLogEntry.url }
         })
 
+        prisma.$disconnect()
+
         const notification = new EmbedBuilder()
           .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
           .setTitle('One of your strikes was removed')
@@ -267,6 +271,8 @@ class Undo extends SlashCommand {
             where: { id: incident.id },
             data: { reference: moderationLogEntry.url }
           })
+
+          prisma.$disconnect()
         } catch {
           try {
             const member = await interaction.guild.members.fetch(id)

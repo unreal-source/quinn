@@ -73,6 +73,8 @@ class ClientReady extends Listener {
           }
         }
       }
+
+      prisma.$disconnect()
     })
 
     // Monitor for unusually high number of member joins

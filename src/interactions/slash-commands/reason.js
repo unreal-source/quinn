@@ -58,6 +58,7 @@ class Reason extends SlashCommand {
       .setTimestamp()
 
     moderationLog.send({ embeds: [moderationLogEntry] })
+    prisma.$disconnect()
 
     return interaction.followUp({ content: `Updated reason for case ${caseNumber}`, ephemeral: true })
   }

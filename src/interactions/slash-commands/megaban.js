@@ -114,6 +114,7 @@ class MegaBan extends SlashCommand {
                 }))
 
                 successfulBans.push(member)
+                prisma.$disconnect()
               } else {
                 failedBans.push(member)
               }

@@ -125,6 +125,8 @@ class Strike extends SlashCommand {
         data: { reference: moderationLogEntry.url }
       })
 
+      prisma.$disconnect()
+
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle(`Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}`)
@@ -156,6 +158,8 @@ class Strike extends SlashCommand {
         where: { id: incident.id },
         data: { reference: moderationLogEntry.url }
       })
+
+      prisma.$disconnect()
 
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
@@ -217,6 +221,8 @@ class Strike extends SlashCommand {
             data: { isActive: false }
           })
         }))
+
+        prisma.$disconnect()
       } else {
         return interaction.followUp({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
       }

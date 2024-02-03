@@ -60,9 +60,11 @@ class History extends SlashCommand {
         .setDescription(`${timeoutsSummary} • ${strikesSummary} • ${kicksSummary} • ${bansSummary}\n—\n${history}`)
         .setThumbnail(member.displayAvatarURL())
 
+      await prisma.$disconnect()
       return interaction.followUp({ embeds: [historyEmbed], ephemeral: true })
     }
 
+    await prisma.$disconnect()
     return interaction.followUp({ content: `${getUsername(member)} has no history.`, ephemeral: true })
   }
 }

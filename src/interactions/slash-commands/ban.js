@@ -124,6 +124,8 @@ class Ban extends SlashCommand {
         where: { id: incident.id },
         data: { reference: moderationLogEntry.url }
       })
+
+      prisma.$disconnect()
     } else {
       return interaction.followUp({ content: 'I don\'t have permission to ban that member.', ephemeral: true })
     }
