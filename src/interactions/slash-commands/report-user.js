@@ -1,5 +1,5 @@
 import { UserCommand } from 'hiei.js'
-import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, TextInputBuilder, TextInputStyle, channelMention, roleMention, userMention, time } from 'discord.js'
+import { ActionRowBuilder, EmbedBuilder, ModalBuilder, PermissionFlagsBits, TextInputBuilder, TextInputStyle, channelMention, roleMention, userMention } from 'discord.js'
 import { createModalCollector, getUsername } from '../../utilities/discord-util.js'
 import log from '../../utilities/logger.js'
 
