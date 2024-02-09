@@ -31,7 +31,7 @@ class Strike extends SlashCommand {
   async run (interaction) {
     const member = interaction.options.getMember('user')
     const reason = interaction.options.getString('reason')
-    const strikeGuardCooldown = new Date(Date.now() + ms(process.env.STRIKE_GUARD_COOLDOWN))
+    const recentStrikeThreshold = new Date(Date.now() - ms(process.env.STRIKE_GUARD_THRESHOLD))
     const expiration = new Date(Date.now() + ms(process.env.STRIKE_DURATION))
 
     await interaction.deferReply({ ephemeral: true })
@@ -43,15 +43,18 @@ class Strike extends SlashCommand {
           is: { isActive: true }
         },
         createdAt: {
-          lte: strikeGuardCooldown
+          gte: recentStrikeThreshold
         }
       },
       include: { strike: true }
     })
 
     if (recentStrike) {
+      const timestamp = new Date(recentStrike.createdAt.getTime())
+      const cooldown = new Date(timestamp.setTime(timestamp.getTime() + ms(process.env.STRIKE_GUARD_THRESHOLD)))
+
       // Uncomment the line below when you are debugging double strike protection
-      log.info({ strike: recentStrike.createdAt, now: new Date(), expiration, retry: strikeGuardCooldown })
+      log.info({ strike: recentStrike.createdAt, now: new Date(), expiration, retry: cooldown, threshold: recentStrikeThreshold })
 
       const recentStrikeEmbed = new EmbedBuilder()
         .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
@@ -59,7 +62,7 @@ class Strike extends SlashCommand {
         .setFooter({ text: `Case ${recentStrike.id} • ${recentStrike.moderator}` })
         .setThumbnail(member.displayAvatarURL())
         .setTimestamp()
-      return interaction.followUp({ content: `${member.user.username} just received a strike ${time(recentStrike.createdAt, 'R')}. Try again ${time(strikeGuardCooldown, 'R')}`, embeds: [recentStrikeEmbed], ephemeral: true })
+      return interaction.followUp({ content: `${member.user.username} just received a strike ${time(recentStrike.createdAt, 'R')}. Try again ${time(cooldown, 'R')}`, embeds: [recentStrikeEmbed], ephemeral: true })
     }
 
     log.info({ event: 'command-used', command: this.name, channel: interaction.channel.name })
