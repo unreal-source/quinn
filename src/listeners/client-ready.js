@@ -22,7 +22,7 @@ class ClientReady extends Listener {
     let memberCount = guild.memberCount
 
     // Remove expired strikes
-    Cron('* * * * *', async () => {
+    Cron('@daily', async () => {
       const now = new Date()
       const activeStrikes = await prisma.case.findMany({
         where: {
