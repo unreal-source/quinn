@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Pull latest release from GitHub
-        uses: appleboy/ssh-action@0.1.5
+        uses: appleboy/ssh-action@1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -22,9 +22,9 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd ~/bots/quinn
-            git pull git@github.com:unreal-slackers/quinn.git
+            git pull
       - name: Build & run
-        uses: appleboy/ssh-action@0.1.5
+        uses: appleboy/ssh-action@1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
