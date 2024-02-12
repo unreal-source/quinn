@@ -1,6 +1,6 @@
 import { Listener } from 'hiei.js'
 import Cron from 'croner'
-import { EmbedBuilder, roleMention } from 'discord.js'
+import { EmbedBuilder } from 'discord.js'
 import log from '../utilities/logger.js'
 import prisma from '../utilities/prisma-client.js'
 
@@ -18,8 +18,6 @@ class ClientReady extends Listener {
     const guild = await this.client.guilds.fetch(process.env.GUILD)
 
     log.info({ event: 'client-ready', guild: guild.name }, `${client.user.username} connected to ${guild.name}`)
-
-    let memberCount = guild.memberCount
 
     // Remove expired strikes
     Cron('@daily', async () => {
