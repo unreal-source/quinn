@@ -76,19 +76,6 @@ class ClientReady extends Listener {
 
       prisma.$disconnect()
     })
-
-    // Monitor for unusually high number of member joins
-    Cron('* * * * *', async () => {
-      const currentMemberCount = this.client.guilds.cache.get(process.env.GUILD).memberCount
-      const difference = currentMemberCount - memberCount
-
-      if (difference >= process.env.SUSPICIOUS_JOIN_COUNT) {
-        const channel = guild.channels.cache.get(process.env.ALERTS_CHANNEL)
-        channel.send({ content: `:warning: ${roleMention(process.env.MODERATOR_ROLE)} ${difference} new members joined the server in the last 1 minute.` })
-      }
-
-      memberCount = currentMemberCount
-    })
   }
 }
 
