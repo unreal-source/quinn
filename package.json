@@ -18,7 +18,7 @@
     "@fastify/cors": "^8.5.0",
     "@fastify/helmet": "^11.1.1",
     "@fastify/rate-limit": "^9.1.0",
-    "@prisma/client": "^5.8.1",
+    "@prisma/client": "^5.10.2",
     "@sentry/node": "^7.93.0",
     "croner": "^7.0.5",
     "discord.js": "^14.14.1",
