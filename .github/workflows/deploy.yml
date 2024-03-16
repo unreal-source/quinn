@@ -1,4 +1,4 @@
-name: Deploy new release
+name: Deploy New Release
 
 on:
   release:
@@ -10,10 +10,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout main branch
+      - name: Checkout code
         uses: actions/checkout@v4
-      - name: Pull latest release from GitHub
+        
+      - name: Update and restart
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
@@ -21,16 +23,7 @@ jobs:
           key: ${{ secrets.KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            cd ~/bots/quinn
+            cd bots/quinn
             git pull
-      - name: Build & run
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          script: |
-            cd ~/bots/quinn
-            npm ci
+            sudo npm ci
             pm2 reload quinn
