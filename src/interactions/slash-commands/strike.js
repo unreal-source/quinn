@@ -192,7 +192,7 @@ class Strike extends SlashCommand {
           await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
         }
 
-        await member.ban({ days: 1, reason })
+        await member.ban({ deleteMessageSeconds: 60 * 60 * 24, reason })
         await interaction.followUp({ content: `${getUsername(member)} received strike ${activeStrikes} and was banned from the server.`, ephemeral: true })
 
         const moderationLogEmbed = new EmbedBuilder()

@@ -23,8 +23,8 @@ class Ban extends SlashCommand {
           required: true,
           choices: [
             { name: 'Don\'t delete any', value: 0 },
-            { name: 'Previous 24 hours', value: 1 },
-            { name: 'Previous 7 days', value: 7 }
+            { name: 'Previous 24 hours', value: 60 * 60 * 24 },
+            { name: 'Previous 7 days', value: 60 * 60 * 24 * 7 }
           ]
         },
         {
@@ -102,10 +102,10 @@ class Ban extends SlashCommand {
       }
 
       if (canNotify) {
-        await member.ban({ deleteMessageDays: messages, reason })
+        await member.ban({ deleteMessageSeconds: messages, reason })
         await interaction.followUp({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
       } else {
-        await member.ban({ deleteMessageDays: messages, reason })
+        await member.ban({ deleteMessageSeconds: messages, reason })
         await interaction.followUp({ content: `${getUsername(member)} was banned from the server.`, ephemeral: true })
         await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
       }
