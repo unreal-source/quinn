@@ -1,5 +1,5 @@
 import { Listener } from 'hiei.js'
-import log from '../utilities/logger.js'
+import { log } from '../utilities/logger.js'
 
 class RateLimit extends Listener {
   constructor () {

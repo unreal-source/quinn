@@ -1,27 +1,29 @@
-import fastify from 'fastify'
+import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import rateLimit from '@fastify/rate-limit'
 import appealSubmitted from './routes/appeal-submitted.js'
-import logger from '../utilities/logger.js'
+import { fastifyOptions } from '../utilities/logger.js'
 
-const app = fastify({ logger })
+const fastify = Fastify({
+  logger: fastifyOptions
+})
 
 const server = {
   configure (client) {
     // Register plugins
-    app.register(cors, {
+    fastify.register(cors, {
       origin: process.env.API_CORS_ORIGIN,
       methods: ['POST']
     })
-    app.register(helmet)
-    app.register(rateLimit, {
+    fastify.register(helmet)
+    fastify.register(rateLimit, {
       max: 100,
       timeWindow: '1 minute'
     })
 
     // Register routes
-    app.register((instance, opts, done) => {
+    fastify.register((instance, opts, done) => {
       instance.route(appealSubmitted(client))
       done()
     })
@@ -29,10 +31,10 @@ const server = {
   async start () {
     // Start the server
     try {
-      await app.listen({ port: process.env.API_PORT })
-      app.log.info(`Server is running on http://localhost:${process.env.API_PORT}`)
+      await fastify.listen({ port: process.env.API_PORT })
+      fastify.log.info(`Server is running on http://localhost:${process.env.API_PORT}`)
     } catch (e) {
-      app.log(e)
+      fastify.log(e)
       process.exit(1)
     }
   }

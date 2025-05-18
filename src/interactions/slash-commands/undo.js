@@ -1,7 +1,7 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } from 'discord.js'
 import { getUsername } from '../../utilities/discord-util.js'
-import log from '../../utilities/logger.js'
+import { log } from '../../utilities/logger.js'
 import prisma from '../../utilities/prisma-client.js'
 
 class Undo extends SlashCommand {

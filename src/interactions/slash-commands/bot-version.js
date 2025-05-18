@@ -2,7 +2,7 @@ import { SlashCommand } from 'hiei.js'
 import { PermissionFlagsBits } from 'discord.js'
 import { importJson } from '../../utilities/json-util.js'
 import { resolve } from 'node:path'
-import log from '../../utilities/logger.js'
+import { log } from '../../utilities/logger.js'
 
 class BotVersion extends SlashCommand {
   constructor () {

@@ -1,7 +1,7 @@
 import { Listener } from 'hiei.js'
 import Cron from 'croner'
 import { EmbedBuilder } from 'discord.js'
-import log from '../utilities/logger.js'
+import { log } from '../utilities/logger.js'
 import prisma from '../utilities/prisma-client.js'
 
 class ClientReady extends Listener {

@@ -1,7 +1,7 @@
 import { SlashCommand } from 'hiei.js'
 import { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, PermissionFlagsBits, time } from 'discord.js'
 import ms from 'ms'
-import log from '../../utilities/logger.js'
+import { log } from '../../utilities/logger.js'
 import { getUsername } from '../../utilities/discord-util.js'
 import prisma from '../../utilities/prisma-client.js'
 

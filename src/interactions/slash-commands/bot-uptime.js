@@ -1,7 +1,7 @@
 import { SlashCommand } from 'hiei.js'
 import { PermissionFlagsBits } from 'discord.js'
 import ms from 'ms'
-import log from '../../utilities/logger.js'
+import { log } from '../../utilities/logger.js'
 
 class BotUptime extends SlashCommand {
   constructor () {

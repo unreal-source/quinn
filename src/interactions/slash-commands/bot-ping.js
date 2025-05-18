@@ -1,6 +1,6 @@
 import { SlashCommand } from 'hiei.js'
 import { PermissionFlagsBits } from 'discord.js'
-import log from '../../utilities/logger.js'
+import { log } from '../../utilities/logger.js'
 
 class BotPing extends SlashCommand {
   constructor () {
