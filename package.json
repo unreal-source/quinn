@@ -8,7 +8,7 @@
     "node": ">=16.9.0"
   },
   "scripts": {
-    "dev": "node -r dotenv/config src/quinn.js",
+    "dev": "bun src/quinn.js",
     "proxy": "ngrok http 9999",
     "lint": "standard | snazzy",
     "start": "node src/quinn.js"
@@ -22,7 +22,6 @@
     "@sentry/node": "^7.107.0",
     "croner": "^8.0.1",
     "discord.js": "^14.14.1",
-    "dotenv": "^16.4.5",
     "fastify": "^4.26.2",
     "hiei.js": "^1.1.0",
     "ms": "^2.1.3",
