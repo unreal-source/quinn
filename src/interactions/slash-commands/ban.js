@@ -92,7 +92,7 @@ class Ban extends SlashCommand {
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle('Banned from the server')
-        .setDescription(`**Reason:** ${reason}\n—\nYou may appeal the ban by filling out [this form](${process.env.BAN_APPEAL_LINK}). Our staff will review your appeal and respond as soon as possible.`)
+        .setDescription(`**Reason:** ${reason}\n—\nYou may appeal the ban by filling out [this form](${Bun.env.BAN_APPEAL_LINK}). Our staff will review your appeal and respond as soon as possible.`)
         .setTimestamp()
 
       try {
@@ -110,7 +110,7 @@ class Ban extends SlashCommand {
         await interaction.followUp({ content: ':warning: The user wasn\'t notified because they\'re not accepting direct messages.', ephemeral: true })
       }
 
-      const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+      const moderationLogChannel = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
       const moderationLogEmbed = new EmbedBuilder()
         .setAuthor({ name: '⛔ Banned' })
         .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)

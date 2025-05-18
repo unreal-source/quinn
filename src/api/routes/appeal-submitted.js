@@ -1,7 +1,7 @@
 export default function (client) {
   return {
     method: 'POST',
-    url: process.env.APPEAL_SUBMITTED_ENDPOINT,
+    url: Bun.env.APPEAL_SUBMITTED_ENDPOINT,
     schema: {
       body: {
         type: 'object',
@@ -37,8 +37,8 @@ export default function (client) {
         const banReason = fields[1].value
         const notificationNotReceived = fields[3].value
         const appeal = fields[4].value
-        const appealChannel = await client.channels.fetch(process.env.BAN_APPEALS_CHANNEL)
-        const moderatorChatChannel = await client.channels.fetch(process.env.MODERATOR_CHAT_CHANNEL)
+        const appealChannel = await client.channels.fetch(Bun.env.BAN_APPEALS_CHANNEL)
+        const moderatorChatChannel = await client.channels.fetch(Bun.env.MODERATOR_CHAT_CHANNEL)
 
         const post = await appealChannel.threads.create({
           name: `New appeal from ${username}`,

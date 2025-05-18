@@ -11,7 +11,7 @@ class MemberLeave extends Listener {
   }
 
   async run (member) {
-    const memberLog = await this.client.channels.fetch(process.env.MEMBER_LOG_CHANNEL)
+    const memberLog = await this.client.channels.fetch(Bun.env.MEMBER_LOG_CHANNEL)
     return memberLog.send({ content: `:red_circle: **${member.user.username} left the server** • Joined the server ${time(member.joinedAt, 'R')}` })
   }
 }

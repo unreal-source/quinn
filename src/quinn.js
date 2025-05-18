@@ -13,11 +13,11 @@ const client = new HieiClient({
 })
 
 Sentry.init({
-  environment: process.env.SENTRY_ENVIRONMENT,
-  dsn: process.env.SENTRY_DSN
+  environment: Bun.env.SENTRY_ENVIRONMENT,
+  dsn: Bun.env.SENTRY_DSN
 })
 
-client.login(process.env.TOKEN)
+client.login(Bun.env.TOKEN)
 
 api.configure(client)
 api.start()

@@ -111,7 +111,7 @@ class Undo extends SlashCommand {
             }
           })
 
-          const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+          const moderationLogChannel = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
           const moderationLogEmbed = new EmbedBuilder()
             .setAuthor({ name: '↩️ Timeout cancelled' })
             .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
@@ -197,7 +197,7 @@ class Undo extends SlashCommand {
         })
 
         const member = await interaction.guild.members.fetch(incident.memberId)
-        const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+        const moderationLogChannel = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
         const moderationLogEmbed = new EmbedBuilder()
           .setAuthor({ name: '↩️ Strike removed' })
           .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)
@@ -257,7 +257,7 @@ class Undo extends SlashCommand {
             }
           })
 
-          const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+          const moderationLogChannel = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
           const moderationLogEmbed = new EmbedBuilder()
             .setAuthor({ name: '↩️ Ban revoked' })
             .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)

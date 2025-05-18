@@ -75,7 +75,7 @@ class Kick extends SlashCommand {
       await member.kick(reason)
       await interaction.followUp({ content: `${getUsername(member)} was kicked from the server.`, ephemeral: true })
 
-      const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+      const moderationLogChannel = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
       const moderationLogEmbed = new EmbedBuilder()
         .setAuthor({ name: '🥾 Kicked' })
         .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)

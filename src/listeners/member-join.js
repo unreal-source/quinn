@@ -12,8 +12,8 @@ class MemberJoin extends Listener {
   }
 
   async run (member) {
-    const memberLog = await this.client.channels.fetch(process.env.MEMBER_LOG_CHANNEL)
-    const newAccountThreshold = new Date(Date.now() - ms(process.env.NEW_ACCOUNT_THRESHOLD))
+    const memberLog = await this.client.channels.fetch(Bun.env.MEMBER_LOG_CHANNEL)
+    const newAccountThreshold = new Date(Date.now() - ms(Bun.env.NEW_ACCOUNT_THRESHOLD))
 
     if (member.user.bot) {
       return memberLog.send({ content: `:robot: <@${member.user.id}> was added to the server • Account created ${time(member.user.createdAt, 'R')}` })

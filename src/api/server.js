@@ -13,7 +13,7 @@ const server = {
   configure (client) {
     // Register plugins
     fastify.register(cors, {
-      origin: process.env.API_CORS_ORIGIN,
+      origin: Bun.env.API_CORS_ORIGIN,
       methods: ['POST']
     })
     fastify.register(helmet)
@@ -31,8 +31,8 @@ const server = {
   async start () {
     // Start the server
     try {
-      await fastify.listen({ port: process.env.API_PORT })
-      fastify.log.info(`Server is running on http://localhost:${process.env.API_PORT}`)
+      await fastify.listen({ port: Bun.env.API_PORT })
+      fastify.log.info(`Server is running on http://localhost:${Bun.env.API_PORT}`)
     } catch (e) {
       fastify.log(e)
       process.exit(1)

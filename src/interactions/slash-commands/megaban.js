@@ -125,7 +125,7 @@ class MegaBan extends SlashCommand {
 
             await interaction.followUp({ content: `Successfully banned ${successfulBans.length} of ${matches.size} accounts. ${failedBans !== 0 ? `\n\n**Successful Bans**\n${successMentions}\n\n**Failed Bans**\n${failMentions}` : ''}`, ephemeral: true })
 
-            const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+            const moderationLog = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
             const moderationLogEntry = new EmbedBuilder()
               .setAuthor({ name: '☢️ MegaBan' })
               .setDescription(`**Accounts Banned:** ${successfulBans.length}\n**Criteria:** Created up to ${created} ago • joined server up to ${joined} ago\n**Reason:** ${reason}`)

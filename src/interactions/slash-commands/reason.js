@@ -50,7 +50,7 @@ class Reason extends SlashCommand {
       }
     })
 
-    const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+    const moderationLog = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
     const moderationLogEntry = new EmbedBuilder()
       .setAuthor({ name: '📝 Reason updated' })
       .setDescription(`**Case:** ${updatedCase.id}\n**Old Reason:** ${originalCase.reason}\n**New Reason:** ${updatedCase.reason}`)

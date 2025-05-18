@@ -48,7 +48,7 @@ class UnlockChannel extends SlashCommand {
       AddReactions: true
     })
 
-    const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+    const moderationLog = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
     const moderationLogEntry = new EmbedBuilder()
       .setAuthor({ name: '🔓 Channel unlocked' })
       .setDescription(`**Channel:** #${channel.name}\n**Reason:** ${reason ?? 'No reason given'}`)

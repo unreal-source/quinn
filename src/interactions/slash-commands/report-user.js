@@ -34,12 +34,12 @@ class ReportUser extends UserCommand {
       if (i.customId === 'reportUserModal') {
         const member = interaction.options.getMember('user')
         const reason = i.fields.getTextInputValue('reason')
-        const reportChannel = interaction.guild.channels.cache.get(process.env.USER_REPORTS_CHANNEL)
+        const reportChannel = interaction.guild.channels.cache.get(Bun.env.USER_REPORTS_CHANNEL)
         const reportEntry = new EmbedBuilder()
           .setAuthor({ name: '⚠️ Reported User' })
           .setDescription(`**Username:** ${getUsername(member)}\n**Display Name:** ${member.displayName}\n**User ID:** ${member.id}`)
 
-        await reportChannel.send({ content: `${roleMention(process.env.MODERATOR_ROLE)} → **${userMention(i.member.id)} reported a user in ${channelMention(interaction.channel.id)}.**\nReason: ${reason}\n`, embeds: [reportEntry] })
+        await reportChannel.send({ content: `${roleMention(Bun.env.MODERATOR_ROLE)} → **${userMention(i.member.id)} reported a user in ${channelMention(interaction.channel.id)}.**\nReason: ${reason}\n`, embeds: [reportEntry] })
 
         log.info({ event: 'user-reported', channel: interaction.channel.name })
 

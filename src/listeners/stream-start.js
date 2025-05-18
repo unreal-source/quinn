@@ -15,7 +15,7 @@ class StreamStart extends Listener {
       return
     }
 
-    const voiceLog = await this.client.channels.fetch(process.env.VOICE_LOG_CHANNEL)
+    const voiceLog = await this.client.channels.fetch(Bun.env.VOICE_LOG_CHANNEL)
     const username = isStaff(newState.member) ? `:shield: **${newState.member.displayName}**` : `<@${newState.member.id}>`
 
     if (!oldState.streaming && newState.streaming) {

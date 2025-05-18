@@ -15,7 +15,7 @@ class BotInfo extends SlashCommand {
 
   async run (interaction) {
     const description = this.client.application.description ? `${this.client.application.description}\n—` : ''
-    const links = `[Source Code](${process.env.BOT_SOURCE_LINK}) • [Report a Bug](${process.env.BOT_ISSUES_LINK}) • [Contribute](${process.env.BOT_CONTRIBUTE_LINK})`
+    const links = `[Source Code](${Bun.env.BOT_SOURCE_LINK}) • [Report a Bug](${Bun.env.BOT_ISSUES_LINK}) • [Contribute](${Bun.env.BOT_CONTRIBUTE_LINK})`
     const memoryUsed = (process.memoryUsage().heapUsed / 1024 / 1024)
     const meta = await importJson(resolve(process.cwd(), 'package.json'))
     const info = new EmbedBuilder()

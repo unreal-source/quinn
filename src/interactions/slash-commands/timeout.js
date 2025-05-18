@@ -84,7 +84,7 @@ class Timeout extends SlashCommand {
       }
     })
 
-    const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+    const moderationLogChannel = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
     const moderationLogEmbed = new EmbedBuilder()
       .setAuthor({ name: `⏳ Timed out for ${duration}` })
       .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}`)

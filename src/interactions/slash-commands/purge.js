@@ -47,7 +47,7 @@ class Purge extends SlashCommand {
       await interaction.channel.bulkDelete(messagesByAuthor)
       await interaction.followUp({ content: `Deleted ${quantity} messages by ${author.user.tag}`, ephemeral: true })
 
-      const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+      const moderationLog = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
       const moderationLogEntry = new EmbedBuilder()
         .setAuthor({ name: `🧹 ${quantity} messages deleted` })
         .setDescription(`**Channel:** ${interaction.channel}\n**Author:** ${author.user.tag}\n**Author ID:** ${author.id}\n**Reason:** ${reason}`)
@@ -60,7 +60,7 @@ class Purge extends SlashCommand {
     await interaction.channel.bulkDelete(quantity)
     await interaction.followUp({ content: `Deleted ${quantity} messages`, ephemeral: true })
 
-    const moderationLog = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+    const moderationLog = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
     const moderationLogEntry = new EmbedBuilder()
       .setAuthor({ name: `🧹 ${quantity} messages deleted` })
       .setDescription(`**Channel:** ${interaction.channel}\n**Reason:** ${reason}`)

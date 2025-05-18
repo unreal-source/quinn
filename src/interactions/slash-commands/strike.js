@@ -31,8 +31,8 @@ class Strike extends SlashCommand {
   async run (interaction) {
     const member = interaction.options.getMember('user')
     const reason = interaction.options.getString('reason')
-    const recentStrikeThreshold = new Date(Date.now() - ms(process.env.STRIKE_GUARD_THRESHOLD))
-    const expiration = new Date(Date.now() + ms(process.env.STRIKE_DURATION))
+    const recentStrikeThreshold = new Date(Date.now() - ms(Bun.env.STRIKE_GUARD_THRESHOLD))
+    const expiration = new Date(Date.now() + ms(Bun.env.STRIKE_DURATION))
 
     await interaction.deferReply({ ephemeral: true })
 
@@ -51,13 +51,13 @@ class Strike extends SlashCommand {
 
     if (recentStrike) {
       const timestamp = new Date(recentStrike.createdAt.getTime())
-      const cooldown = new Date(timestamp.setTime(timestamp.getTime() + ms(process.env.STRIKE_GUARD_THRESHOLD)))
+      const cooldown = new Date(timestamp.setTime(timestamp.getTime() + ms(Bun.env.STRIKE_GUARD_THRESHOLD)))
 
       // Uncomment the line below when you are debugging double strike protection
       log.info({ strike: recentStrike.createdAt, now: new Date(), expiration, retry: cooldown, threshold: recentStrikeThreshold })
 
       const recentStrikeEmbed = new EmbedBuilder()
-        .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
+        .setAuthor({ name: `🚩 Strike 1 • Timed out for ${Bun.env.STRIKE_ONE_TIMEOUT_DURATION}` })
         .setDescription(`**Member:** ${recentStrike.member}\n**Member ID:** ${recentStrike.memberId}\n**Reason:** ${recentStrike.reason}\n**Expiration:** ${time(recentStrike.strike.expiration, 'R')}`)
         .setFooter({ text: `Case ${recentStrike.id} • ${recentStrike.moderator}` })
         .setThumbnail(member.displayAvatarURL())
@@ -107,15 +107,15 @@ class Strike extends SlashCommand {
       }
     })
 
-    const moderationLogChannel = interaction.guild.channels.cache.get(process.env.MODERATION_LOG_CHANNEL)
+    const moderationLogChannel = interaction.guild.channels.cache.get(Bun.env.MODERATION_LOG_CHANNEL)
 
     // Strike 1 - Timeout for 10 mins
     if (activeStrikes === 1) {
-      await member.timeout(ms(process.env.STRIKE_ONE_TIMEOUT_DURATION), reason)
-      await interaction.followUp({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
+      await member.timeout(ms(Bun.env.STRIKE_ONE_TIMEOUT_DURATION), reason)
+      await interaction.followUp({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${Bun.env.STRIKE_ONE_TIMEOUT_DURATION}.`, ephemeral: true })
 
       const moderationLogEmbed = new EmbedBuilder()
-        .setAuthor({ name: `🚩 Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}` })
+        .setAuthor({ name: `🚩 Strike 1 • Timed out for ${Bun.env.STRIKE_ONE_TIMEOUT_DURATION}` })
         .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
         .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
         .setThumbnail(member.displayAvatarURL())
@@ -132,7 +132,7 @@ class Strike extends SlashCommand {
 
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-        .setTitle(`Strike 1 • Timed out for ${process.env.STRIKE_ONE_TIMEOUT_DURATION}`)
+        .setTitle(`Strike 1 • Timed out for ${Bun.env.STRIKE_ONE_TIMEOUT_DURATION}`)
         .setDescription(`**Reason:** ${reason}\n**Expiration:** ${time(incident.strike.expiration, 'f')}`)
         .setTimestamp()
 
@@ -145,11 +145,11 @@ class Strike extends SlashCommand {
 
     // Strike 2 - Timeout for 1 hour
     if (activeStrikes === 2) {
-      await member.timeout(ms(process.env.STRIKE_TWO_TIMEOUT_DURATION), reason)
-      await interaction.followUp({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
+      await member.timeout(ms(Bun.env.STRIKE_TWO_TIMEOUT_DURATION), reason)
+      await interaction.followUp({ content: `${getUsername(member)} received strike ${activeStrikes} and was timed out for ${Bun.env.STRIKE_TWO_TIMEOUT_DURATION}.`, ephemeral: true })
 
       const moderationLogEmbed = new EmbedBuilder()
-        .setAuthor({ name: `🚩 Strike 2 • Timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}` })
+        .setAuthor({ name: `🚩 Strike 2 • Timed out for ${Bun.env.STRIKE_TWO_TIMEOUT_DURATION}` })
         .setDescription(`**Member:** ${incident.member}\n**Member ID:** ${incident.memberId}\n**Reason:** ${incident.reason}\n**Expiration:** ${time(incident.strike.expiration, 'R')}`)
         .setFooter({ text: `Case ${incident.id} • ${incident.moderator}` })
         .setThumbnail(member.displayAvatarURL())
@@ -166,7 +166,7 @@ class Strike extends SlashCommand {
 
       const notification = new EmbedBuilder()
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-        .setTitle(`Strike 2 • Timed out for ${process.env.STRIKE_TWO_TIMEOUT_DURATION}`)
+        .setTitle(`Strike 2 • Timed out for ${Bun.env.STRIKE_TWO_TIMEOUT_DURATION}`)
         .setDescription(`**Reason:** ${reason}\n**Expiration:** ${time(incident.strike.expiration, 'f')}`)
         .setTimestamp()
 
@@ -183,7 +183,7 @@ class Strike extends SlashCommand {
         const notification = new EmbedBuilder()
           .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
           .setTitle('Strike 3 • Banned from the server')
-          .setDescription(`**Reason:** ${reason}\n—\nYou may appeal the ban by filling out [this form](${process.env.BAN_APPEAL_LINK}). Our staff will review your appeal and respond as soon as possible.`)
+          .setDescription(`**Reason:** ${reason}\n—\nYou may appeal the ban by filling out [this form](${Bun.env.BAN_APPEAL_LINK}). Our staff will review your appeal and respond as soon as possible.`)
           .setTimestamp()
 
         try {

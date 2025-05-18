@@ -17,8 +17,8 @@ export function createModalCollector (client, interaction) {
  * @param {member} member - The guild member
 */
 export function isStaff (member) {
-  const isAdmin = member.roles.cache.some(role => role.id === process.env.ADMIN_ROLE)
-  const isModerator = member.roles.cache.some(role => role.id === process.env.MODERATOR_ROLE)
+  const isAdmin = member.roles.cache.some(role => role.id === Bun.env.ADMIN_ROLE)
+  const isModerator = member.roles.cache.some(role => role.id === Bun.env.MODERATOR_ROLE)
 
   return isAdmin || isModerator
 }
