@@ -21,7 +21,7 @@
     "@prisma/client": "^5.11.0",
     "@sentry/node": "^7.107.0",
     "croner": "^8.0.1",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.26.2",
     "dotenv": "^16.4.5",
     "fastify": "^4.26.2",
     "hiei.js": "^1.1.0",
