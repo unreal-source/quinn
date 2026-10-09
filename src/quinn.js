@@ -7,8 +7,6 @@ import api from './api/server.js'
 const client = new HieiClient({
   intents: [
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildVoiceStates
   ]
 })
